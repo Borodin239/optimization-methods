@@ -16,7 +16,9 @@ public class MainWin extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource(path).openStream());
-        primaryStage.setTitle("Hello, додик!");
+        MainController controller = fxmlLoader.getController();
+        controller.build();
+        primaryStage.setTitle("Оптимизация функций с одной переменной");
         primaryStage.setScene(new Scene(root));
         primaryStage.setAlwaysOnTop(false);
         primaryStage.show();
