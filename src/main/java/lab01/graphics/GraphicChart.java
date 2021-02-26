@@ -32,6 +32,7 @@ public class GraphicChart {
         this.lineChart = lineChart;
         this.formula = formula;
 
+        lineChart.setAnimated(false);
         lineChart.setLegendVisible(false);
         lineChart.getXAxis().setAutoRanging(false);
         lineChart.getYAxis().setAutoRanging(false);
@@ -112,6 +113,7 @@ public class GraphicChart {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void setSeries() {
         inBorderGraphicSeries = new LineChart.Series<>();
         outLeftBorderGraphicSeries = new LineChart.Series<>();
@@ -120,11 +122,10 @@ public class GraphicChart {
         greenSeries = new LineChart.Series<>();
         blueSeries = new LineChart.Series<>();
 
-        series = List.of(inBorderGraphicSeries, outLeftBorderGraphicSeries, outRightBorderGraphicSeries,
+        series = List.of(outLeftBorderGraphicSeries, inBorderGraphicSeries, outRightBorderGraphicSeries,
                 redSeries, greenSeries, blueSeries);
 
-        Platform.runLater(() -> series.forEach((s) -> lineChart.getData().add(s)));
-
+        Platform.runLater(() -> lineChart.getData().addAll(series));
     }
 
     private void buildGraphicData(double l, double r, UnaryOperator<Double> function) {

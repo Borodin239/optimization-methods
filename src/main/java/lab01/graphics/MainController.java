@@ -46,8 +46,8 @@ public class MainController {
     }
 
     private int findIteration(double val) {
-        return (int) (val / (iterationSlider.getMax() - iterationSlider.getMin())
-                 * (iterations.size() - 1));
+        return Math.min(iterations.size(), (int) (val / (iterationSlider.getMax() - iterationSlider.getMin())
+                 * (iterations.size() - 1)));
     }
 
     private void evaluate() {
@@ -58,7 +58,7 @@ public class MainController {
         UnaryOptimization opt = new DichotomyMethod();
         // ^^^^^^ PASTE OPTIMIZATION HERE ^^^^^^
 
-        iterations = opt.getOptimization(l, r, (r - l) * 0.0000001, formula);
+        iterations = opt.getOptimization(l, r, (r - l) * 0.0001, formula);
         chart.setGraphics(iterations, l, r);
     }
 
