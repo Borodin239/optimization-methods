@@ -46,8 +46,8 @@ public class MainController {
     }
 
     private int findIteration(double val) {
-        return (int) ((iterationSlider.getMax() - iterationSlider.getMin())
-                / iterations.size() * val);
+        return (int) (val / (iterationSlider.getMax() - iterationSlider.getMin())
+                 * (iterations.size() - 1));
     }
 
     private void evaluate() {
@@ -55,7 +55,7 @@ public class MainController {
         double r = Double.parseDouble(rField.getText());
 
 
-        UnaryOptimization opt = new GoldenSectionSearch();
+        UnaryOptimization opt = new DichotomyMethod();
         // ^^^^^^ PASTE OPTIMIZATION HERE ^^^^^^
 
         iterations = opt.getOptimization(l, r, (r - l) * 0.0000001, formula);
