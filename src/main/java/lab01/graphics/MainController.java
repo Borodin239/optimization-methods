@@ -43,7 +43,7 @@ public class MainController {
             lineChart.getData().add(blueSeries);
         });
 
-        drawFunction(1, 250, (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3));
+        drawFunction(240, 250, (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3));
     }
 
     private void drawFunction(double l, double r, UnaryOperator<Double> function) {
