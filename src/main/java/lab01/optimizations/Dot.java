@@ -25,9 +25,7 @@ public class Dot {
         return color;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
+    public void setColor(Color color) { this.color = color; }
 
     public double getY() {
         return y;

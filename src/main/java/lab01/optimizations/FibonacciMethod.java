@@ -22,7 +22,7 @@ public class FibonacciMethod implements UnaryOptimization {
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
         List<Iteration> iterations = new ArrayList<>();
         final List<Double> fibonacciNumbers = getFibonacciNumbers(l, r, epsilon);
-        final int n = fibonacciNumbers.size() - 2;
+        final int n = fibonacciNumbers.size() - 3;
         final double l_0 = l;
         final double r_0 = r;
 

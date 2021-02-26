@@ -1,19 +1,19 @@
 package lab01.graphics;
 
-import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import lab01.optimizations.*;
 
+import java.util.List;
 import java.util.function.UnaryOperator;
 
-public class MainController {
 
-    private LineChart.Series<Number, Number> functionSeries;
-    private LineChart.Series<Number, Number> redSeries;
-    private LineChart.Series<Number, Number> greenSeries;
-    private LineChart.Series<Number, Number> blueSeries;
+public class MainController {
 
     @FXML
     LineChart<Number, Number> lineChart;
@@ -21,37 +21,47 @@ public class MainController {
     @FXML
     Slider iterationSlider;
 
+    @FXML
+    TextField lField;
+
+    @FXML
+    TextField rField;
+
+    @FXML
+    Button evaluateButton;
+
+    private List<Iteration> iterations;
+    private GraphicChart chart;
+    private final UnaryOperator<Double> formula = (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3);
+
     public void build() {
-        setLineChart();
-    }
+        chart = new GraphicChart(lineChart, formula);
 
-    private void setLineChart() {
-        lineChart.setAnimated(false);
-        lineChart.getXAxis().setAutoRanging(true);
-        lineChart.getYAxis().setAutoRanging(true);
-        new LineChart.Series<>();
-
-        functionSeries = new LineChart.Series<>();
-        redSeries = new LineChart.Series<>();
-        greenSeries = new LineChart.Series<>();
-        blueSeries = new LineChart.Series<>();
-
-        Platform.runLater(() -> {
-            lineChart.getData().add(functionSeries);
-            lineChart.getData().add(redSeries);
-            lineChart.getData().add(greenSeries);
-            lineChart.getData().add(blueSeries);
+        evaluateButton.onActionProperty().setValue((a) -> evaluate());
+        iterationSlider.valueProperty().addListener((a, oldV, newV) -> {
+            if (iterations != null && findIteration((double)oldV) != findIteration((double)newV)) {
+                chart.update(findIteration((double)newV));
+            }
         });
-
-        drawFunction(240, 250, (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3));
     }
 
-    private void drawFunction(double l, double r, UnaryOperator<Double> function) {
-        for (int i = 0; i < 1000; i++) {
-            double x = l + i * (r - l) / 1000;
-            functionSeries.getData().add(new LineChart.Data<>(x,
-                    function.apply(x)));
-        }
+    private int findIteration(double val) {
+        return (int) ((iterationSlider.getMax() - iterationSlider.getMin())
+                / iterations.size() * val);
     }
+
+    private void evaluate() {
+        double l = Double.parseDouble(lField.getText());
+        double r = Double.parseDouble(rField.getText());
+
+
+        UnaryOptimization opt = new GoldenSectionSearch();
+        // ^^^^^^ PASTE OPTIMIZATION HERE ^^^^^^
+
+        iterations = opt.getOptimization(l, r, (r - l) * 0.0000001, formula);
+        chart.setGraphics(iterations, l, r);
+    }
+
+
 
 }
