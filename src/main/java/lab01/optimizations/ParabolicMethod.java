@@ -6,7 +6,7 @@ import java.util.function.UnaryOperator;
 
 public class ParabolicMethod implements UnaryOptimization {
 
-    private double makeOneIteration(double x_1, double x_2, double x_3, UnaryOperator<Double> formula) {
+    public static double makeOneIteration(double x_1, double x_2, double x_3, UnaryOperator<Double> formula) {
         double a_1 = (formula.apply(x_2) - formula.apply(x_1)) / (x_2 - x_1);
         double a_2 =  (1 / (x_3 - x_2)) * ((formula.apply(x_3) - formula.apply(x_1)) / (x_3 - x_1) - a_1);
         return 0.5 * (x_1 + x_2 - a_1 / a_2);

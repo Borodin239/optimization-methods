@@ -39,15 +39,15 @@ public class MainController {
 
         evaluateButton.onActionProperty().setValue((a) -> evaluate());
         iterationSlider.valueProperty().addListener((a, oldV, newV) -> {
-            if (iterations != null && findIteration((double)oldV) != findIteration((double)newV)) {
-                chart.update(findIteration((double)newV));
+            if (iterations != null && findIteration((double) oldV) != findIteration((double) newV)) {
+                chart.update(findIteration((double) newV));
             }
         });
     }
 
     private int findIteration(double val) {
         return Math.min(iterations.size(), (int) (val / (iterationSlider.getMax() - iterationSlider.getMin())
-                 * (iterations.size() - 1)));
+                * (iterations.size() - 1)));
     }
 
     private void evaluate() {
@@ -55,13 +55,12 @@ public class MainController {
         double r = Double.parseDouble(rField.getText());
 
 
-        UnaryOptimization opt = new DichotomyMethod();
+        UnaryOptimization opt = new BrandOptimization();
         // ^^^^^^ PASTE OPTIMIZATION HERE ^^^^^^
 
         iterations = opt.getOptimization(l, r, (r - l) * 0.0001, formula);
         chart.setGraphics(iterations, l, r);
     }
-
 
 
 }
