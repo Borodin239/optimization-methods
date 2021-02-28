@@ -1,10 +1,9 @@
 package lab01.optimizations;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public class ParabolicMethod implements UnaryOptimization {
+public class ParabolicMethod extends BasicOptimization {
 
     public static double makeOneIteration(double x_1, double x_2, double x_3, UnaryOperator<Double> formula) {
         double a_1 = (formula.apply(x_2) - formula.apply(x_1)) / (x_2 - x_1);
@@ -14,8 +13,6 @@ public class ParabolicMethod implements UnaryOptimization {
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
-        List<Iteration> iterations = new ArrayList<>();
-
         double x_1 = l;
         double x_2 = (l + r) / 2;
         double x_3 = r;
@@ -41,7 +38,7 @@ public class ParabolicMethod implements UnaryOptimization {
                 }
             }
 
-            iterations.add(new Iteration(x_1, x_3));
+            optimizationResult.add(new Iteration(x_1, x_3));
 
             if (Math.abs(currentIterationResult - lastIterationResult) < epsilon) {
                 break;
@@ -49,6 +46,6 @@ public class ParabolicMethod implements UnaryOptimization {
             lastIterationResult = currentIterationResult;
         }
 
-        return iterations;
+        return optimizationResult;
     }
 }

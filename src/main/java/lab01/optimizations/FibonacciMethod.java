@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public class FibonacciMethod implements UnaryOptimization {
+public class FibonacciMethod extends BasicOptimization {
 
     private List<Double> getFibonacciNumbers(double l, double r, double epsilon) {
         List<Double> fibonacciNumbers = new ArrayList<>();
@@ -20,7 +20,6 @@ public class FibonacciMethod implements UnaryOptimization {
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
-        List<Iteration> iterations = new ArrayList<>();
         final List<Double> fibonacciNumbers = getFibonacciNumbers(l, r, epsilon);
         final int n = fibonacciNumbers.size() - 3;
         final double l_0 = l;
@@ -32,13 +31,13 @@ public class FibonacciMethod implements UnaryOptimization {
 
             if (formula.apply(x_1) <= formula.apply(x_2)) {
                 r = x_2;
-            } else  {
+            } else {
                 l = x_1;
             }
 
-            iterations.add(new Iteration(l, r));
+            optimizationResult.add(new Iteration(l, r));
         }
 
-        return iterations;
+        return optimizationResult;
     }
 }

@@ -6,8 +6,7 @@ import java.util.function.UnaryOperator;
 
 import static java.lang.Math.*;
 
-public class BrandOptimization implements UnaryOptimization {
-    ArrayList<Iteration> optimizationResult;
+public class BrandOptimization extends BasicOptimization {
 
     private boolean notEquals(double first, double second, double third) {
         return first != second && third != first && third != second;
@@ -18,14 +17,6 @@ public class BrandOptimization implements UnaryOptimization {
             return 1;
         }
         return -1;
-    }
-
-    private boolean checkIteration(double l, double r) {
-        if (optimizationResult.isEmpty()) {
-            return true;
-        }
-        Iteration lastIteration = optimizationResult.get(optimizationResult.size() - 1);
-        return lastIteration.getL() != l || lastIteration.getR() != r;
     }
 
     @Override
