@@ -3,6 +3,7 @@ package lab01.graphics;
 import javafx.application.Platform;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import lab01.optimizations.Dot;
 import lab01.optimizations.Iteration;
 
@@ -15,15 +16,15 @@ public class GraphicChart {
     private final LineChart<Number, Number> lineChart;
     private final UnaryOperator<Double> formula;
 
-    private LineChart.Series<Number, Number> outLeftBorderGraphicSeries;
-    private LineChart.Series<Number, Number> outRightBorderGraphicSeries;
-    private LineChart.Series<Number, Number> inBorderGraphicSeries;
-    private LineChart.Series<Number, Number> redSeries;
-    private LineChart.Series<Number, Number> greenSeries;
-    private LineChart.Series<Number, Number> blueSeries;
-    private List<LineChart.Series<Number, Number>> series;
+    private XYChart.Series<Number, Number> outLeftBorderGraphicSeries;
+    private XYChart.Series<Number, Number> outRightBorderGraphicSeries;
+    private XYChart.Series<Number, Number> inBorderGraphicSeries;
+//    private XYChart.Series<Number, Number> redSeries;
+//    private XYChart.Series<Number, Number> greenSeries;
+//    private XYChart.Series<Number, Number> blueSeries;
+    private List<XYChart.Series<Number, Number>> series;
 
-    private List<LineChart.Data<Number, Number>> graphicData;
+    private List<XYChart.Data<Number, Number>> graphicData;
 
     private List<Iteration> iterations;
 
@@ -63,7 +64,7 @@ public class GraphicChart {
             }
         }
 
-        for (LineChart.Data<Number, Number> dot : graphicData) {
+        for (XYChart.Data<Number, Number> dot : graphicData) {
             xMax = Math.max(xMax, (double)dot.getXValue());
             yMax = Math.max(yMax, (double)dot.getYValue());
             xMin = Math.min(xMin, (double)dot.getXValue());
@@ -87,22 +88,11 @@ public class GraphicChart {
     public void update(int iterationNum) {
         series.forEach((a) -> a.getData().clear());
         Iteration iteration = iterations.get(iterationNum);
-        fillColorSeries(iteration);
         drawFormula(iteration.getL(), iteration.getR());
     }
 
-    private void fillColorSeries(Iteration iteration) {
-        for (Dot dot : iteration.getDots()) {
-            switch (dot.getColor()) {
-                case RED -> redSeries.getData().add(new LineChart.Data<>(dot.getX(), dot.getY()));
-                case BLUE -> blueSeries.getData().add(new LineChart.Data<>(dot.getX(), dot.getY()));
-                case GREEN -> greenSeries.getData().add(new LineChart.Data<>(dot.getX(), dot.getY()));
-            }
-        }
-    }
-
     private void drawFormula(double l, double r) {
-        for (LineChart.Data<Number, Number> dot : graphicData) {
+        for (XYChart.Data<Number, Number> dot : graphicData) {
             if ((double)dot.getXValue() < l) {
                 outLeftBorderGraphicSeries.getData().add(dot);
             } else if (r < (double)dot.getXValue()) {
@@ -113,17 +103,15 @@ public class GraphicChart {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void setSeries() {
-        inBorderGraphicSeries = new LineChart.Series<>();
-        outLeftBorderGraphicSeries = new LineChart.Series<>();
-        outRightBorderGraphicSeries = new LineChart.Series<>();
-        redSeries = new LineChart.Series<>();
-        greenSeries = new LineChart.Series<>();
-        blueSeries = new LineChart.Series<>();
+        inBorderGraphicSeries = new XYChart.Series<>();
+        outLeftBorderGraphicSeries = new XYChart.Series<>();
+        outRightBorderGraphicSeries = new XYChart.Series<>();
 
-        series = List.of(outLeftBorderGraphicSeries, inBorderGraphicSeries, outRightBorderGraphicSeries,
-                redSeries, greenSeries, blueSeries);
+        series = new ArrayList<>();
+        series.add(outLeftBorderGraphicSeries);
+        series.add(inBorderGraphicSeries);
+        series.add(outRightBorderGraphicSeries);
 
         Platform.runLater(() -> lineChart.getData().addAll(series));
     }
@@ -132,7 +120,7 @@ public class GraphicChart {
         graphicData = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             double x = l + i * (r - l) / 1000;
-            graphicData.add(new LineChart.Data<>(x, function.apply(x)));
+            graphicData.add(new XYChart.Data<>(x, function.apply(x)));
         }
     }
 }
