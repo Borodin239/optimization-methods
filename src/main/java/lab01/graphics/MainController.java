@@ -1,7 +1,5 @@
 package lab01.graphics;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
@@ -40,13 +38,15 @@ public class MainController {
         evaluateButton.onActionProperty().setValue((a) -> evaluate());
         iterationSlider.valueProperty().addListener((a, oldV, newV) -> {
             if (iterations != null && findIteration((double) oldV) != findIteration((double) newV)) {
+                System.out.println(findIteration((double) newV) + " " + newV);
                 chart.update(findIteration((double) newV));
             }
         });
     }
 
     private int findIteration(double val) {
-        return Math.min(iterations.size(), (int) (val / (iterationSlider.getMax() - iterationSlider.getMin())
+        return Math.min(iterations.size() - 1, (int) ((val - iterationSlider.getMin()) /
+                (iterationSlider.getMax() - iterationSlider.getMin())
                 * (iterations.size() - 1)));
     }
 
