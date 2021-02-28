@@ -58,7 +58,7 @@ public class MainController {
         UnaryOptimization opt = new BrandOptimization();
         // ^^^^^^ PASTE OPTIMIZATION HERE ^^^^^^
 
-        iterations = opt.getOptimization(l, r, (r - l) * 0.0001, formula);
+        iterations = opt.getOptimization(l, r, (r - l) * 0.000001, formula);
         chart.setGraphics(iterations, l, r);
     }
 

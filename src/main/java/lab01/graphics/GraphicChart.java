@@ -19,9 +19,6 @@ public class GraphicChart {
     private XYChart.Series<Number, Number> outLeftBorderGraphicSeries;
     private XYChart.Series<Number, Number> outRightBorderGraphicSeries;
     private XYChart.Series<Number, Number> inBorderGraphicSeries;
-//    private XYChart.Series<Number, Number> redSeries;
-//    private XYChart.Series<Number, Number> greenSeries;
-//    private XYChart.Series<Number, Number> blueSeries;
     private List<XYChart.Series<Number, Number>> series;
 
     private List<XYChart.Data<Number, Number>> graphicData;
@@ -43,10 +40,11 @@ public class GraphicChart {
     }
 
     public void setGraphics(List<Iteration> iterations, double l, double r) {
+        series.forEach((a) -> a.getData().clear());
         this.iterations = iterations;
         buildGraphicData(l, r, formula);
         resizeChart(iterations);
-        drawFormula(l, r);
+        update(0);
     }
 
     private void resizeChart(List<Iteration> iterations) {
