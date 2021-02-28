@@ -55,7 +55,7 @@ public class MainController {
         double r = Double.parseDouble(rField.getText());
 
 
-        UnaryOptimization opt = new BrandOptimization();
+        UnaryOptimization opt = new FibonacciMethod();
         // ^^^^^^ PASTE OPTIMIZATION HERE ^^^^^^
 
         iterations = opt.getOptimization(l, r, (r - l) * 0.000001, formula);

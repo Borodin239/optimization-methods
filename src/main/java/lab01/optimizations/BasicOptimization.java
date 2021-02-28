@@ -3,7 +3,7 @@ package lab01.optimizations;
 import java.util.ArrayList;
 
 public abstract class BasicOptimization implements UnaryOptimization{
-    ArrayList<Iteration> optimizationResult;
+    ArrayList<Iteration> optimizationResult = new ArrayList<>();
 
     boolean checkIteration(double l, double r) {
         if (optimizationResult.isEmpty()) {

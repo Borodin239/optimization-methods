@@ -21,7 +21,6 @@ public class BrandOptimization extends BasicOptimization {
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
-        optimizationResult = new ArrayList<>();
         double K = (3 - sqrt(5)) / 2;
         double x, w, v, u = 0, fx, fw, fv;
         x = w = v = (l + r) / 2;

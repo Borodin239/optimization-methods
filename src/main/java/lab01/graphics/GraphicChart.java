@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import lab01.optimizations.Dot;
 import lab01.optimizations.Iteration;
 
 import java.util.ArrayList;
@@ -43,24 +42,15 @@ public class GraphicChart {
         series.forEach((a) -> a.getData().clear());
         this.iterations = iterations;
         buildGraphicData(l, r, formula);
-        resizeChart(iterations);
+        resizeChart();
         update(0);
     }
 
-    private void resizeChart(List<Iteration> iterations) {
+    private void resizeChart() {
         double xMax = Double.MIN_VALUE;
         double yMax = Double.MIN_VALUE;
         double xMin = Double.MAX_VALUE;
         double yMin = Double.MAX_VALUE;
-
-        for (Iteration iteration : iterations) {
-            for (Dot dot : iteration.getDots()) {
-                xMax = Math.max(xMax, dot.getX());
-                yMax = Math.max(yMax, dot.getY());
-                xMin = Math.min(xMin, dot.getX());
-                yMin = Math.min(yMin, dot.getY());
-            }
-        }
 
         for (XYChart.Data<Number, Number> dot : graphicData) {
             xMax = Math.max(xMax, (double)dot.getXValue());
