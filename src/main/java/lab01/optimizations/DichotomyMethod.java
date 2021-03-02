@@ -1,12 +1,14 @@
 package lab01.optimizations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public class DichotomyMethod extends BasicOptimization {
+public class DichotomyMethod implements UnaryOptimization {
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
+        List<Iteration> optimizationResult = new ArrayList<>();
         optimizationResult.add(new Iteration(l, r));
         while ((r - l) / 2 > epsilon) {
             double x_1 = (r + l - epsilon) / 2;

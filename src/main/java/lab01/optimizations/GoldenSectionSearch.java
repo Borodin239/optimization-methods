@@ -1,13 +1,15 @@
 package lab01.optimizations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public class GoldenSectionSearch extends BasicOptimization {
+public class GoldenSectionSearch implements UnaryOptimization {
     private final double GOLDEN_SECTION = (1 + Math.sqrt(5)) / 2.0;
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
+        List<Iteration> optimizationResult = new ArrayList<>();
         optimizationResult.add(new Iteration(l, r));
         double x1 = l + (r - l) / (GOLDEN_SECTION + 1);
         double x2 = r - (r - l) / (GOLDEN_SECTION + 1);

@@ -1,11 +1,12 @@
 package lab01.optimizations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
 import static java.lang.Math.*;
 
-public class BrandOptimization extends BasicOptimization {
+public class BrandOptimization implements UnaryOptimization {
 
     private boolean notEquals(double first, double second, double third) {
         return first != second && third != first && third != second;
@@ -20,6 +21,7 @@ public class BrandOptimization extends BasicOptimization {
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
+        List<Iteration> optimizationResult = new ArrayList<>();
         optimizationResult.add(new Iteration(l, r));
         double K = (3 - sqrt(5)) / 2;
         double x, w, v, u = 0, fx, fw, fv;
@@ -27,6 +29,8 @@ public class BrandOptimization extends BasicOptimization {
         fx = fv = fw = formula.apply(x);
         double step, prevStep; // длины текущего и предыдущего шагов
         step = prevStep = r - l;
+        // TODO:: костыль
+        double prevL = l - 1, prevR = r - 1;
         while (abs(r - l) > epsilon) {
             double g = prevStep;
             prevStep = step;
