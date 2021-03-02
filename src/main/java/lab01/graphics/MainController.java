@@ -79,15 +79,10 @@ public class MainController {
             if (methodName != null && optimizationMap.containsKey(methodName)) {
                 iterations = optimizationMap.get(methodName)
                         .getOptimization(l, r, (r - l) * 0.000001, formula);
-                for (Iteration i : iterations) {
-                    System.out.println(i.getL());
-                }
                 chart.setGraphics(iterations, l, r);
             }
         } catch (NumberFormatException ignored) {
 
         }
     }
-
-
 }
