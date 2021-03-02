@@ -78,7 +78,7 @@
                   <Insets bottom="5.0" left="3.0" right="3.0" top="8.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="borderLabel" text="[]">
+            <Label fx:id="borderLabel" minWidth="-Infinity" prefWidth="150.0" text="[]">
                <HBox.margin>
                   <Insets bottom="5.0" left="20.0" right="3.0" top="8.0" />
                </HBox.margin>

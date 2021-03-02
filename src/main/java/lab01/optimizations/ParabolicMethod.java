@@ -42,12 +42,12 @@ public class ParabolicMethod implements UnaryOptimization {
         List<Iteration> optimizationResult = new ArrayList<>();
         optimizationResult.add(new Iteration(l, r));
 
-        Triple lastIterationResult = new Triple(l, (l + r) / 2, r);
+        Triple lastIterationResult = new Triple(l, 2.1, r);
 
         while (true) {
             Triple currentIterationResult = makeOneIteration(lastIterationResult, formula);
 
-            optimizationResult.add(new Iteration(currentIterationResult.getX_1(), currentIterationResult.getX_2()));
+            optimizationResult.add(new Iteration(currentIterationResult.getX_1(), currentIterationResult.getX_3()));
 
             if (Math.abs(currentIterationResult.getX_2() - lastIterationResult.getX_2()) < epsilon) {
                 optimizationResult.add(new Iteration(currentIterationResult.getX_2() - epsilon,
