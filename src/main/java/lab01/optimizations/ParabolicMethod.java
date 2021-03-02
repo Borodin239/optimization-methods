@@ -14,9 +14,8 @@ public class ParabolicMethod implements UnaryOptimization {
         double x_2 = res.getX_2();
         double x_3 = res.getX_3();
 
-        double a_1 = (formula.apply(x_2) - formula.apply(x_1)) / (x_2 - x_1);
-        double a_2 = (1 / (x_3 - x_2)) * ((formula.apply(x_3) - formula.apply(x_1)) / (x_3 - x_1) - a_1);
-        double currentIterationResult = 0.5 * (x_1 + x_2 - a_1 / a_2);
+        Triple coefs = getCoeffs(res, formula);
+        double currentIterationResult = - 0.5 * coefs.getX_2() / coefs.getX_1();
 
         if (x_1 <= currentIterationResult && currentIterationResult <= x_2 && x_2 <= x_3) {
             if (formula.apply(currentIterationResult) >= formula.apply(x_2)) {
@@ -37,7 +36,7 @@ public class ParabolicMethod implements UnaryOptimization {
         return new Triple(x_1, x_2, x_3);
     }
 
-    private UnaryOperator<Double> parabolaFunction(Triple points, UnaryOperator<Double> formula) {
+    private static Triple getCoeffs(Triple points, UnaryOperator<Double> formula) {
         double x_1 = points.getX_1();
         double x_2 = points.getX_2();
         double x_3 = points.getX_3();
@@ -49,7 +48,13 @@ public class ParabolicMethod implements UnaryOptimization {
         double b = (y_2 - y_1 - a * (x_2 * x_2 - x_1 * x_1)) / (x_2 - x_1);
         double c = y_1 - a * x_1 * x_1 - b * x_1;
 
-        return (x) -> a * x * x + b * x + c;
+        return new Triple(a, b, c);
+    }
+
+    private UnaryOperator<Double> parabolaFunction(Triple points, UnaryOperator<Double> formula) {
+        Triple coeffs = getCoeffs(points, formula);
+
+        return (x) -> coeffs.getX_1() * x * x + coeffs.getX_2() * x + coeffs.getX_3();
     }
 
     @Override
@@ -57,7 +62,7 @@ public class ParabolicMethod implements UnaryOptimization {
         List<Iteration> optimizationResult = new ArrayList<>();
         optimizationResult.add(new Iteration(l, r));
 
-        Triple lastIterationResult = new Triple(l, 2.1, r);
+        Triple lastIterationResult = new Triple(l, (l + r) / 2, r);
 
         while (true) {
             Triple currentIterationResult = makeOneIteration(lastIterationResult, formula);

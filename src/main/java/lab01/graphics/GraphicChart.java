@@ -77,7 +77,7 @@ public class GraphicChart {
         series.forEach((a) -> a.getData().clear());
         Iteration iteration = iterations.get(iterationNum);
         drawFormula(iteration.getL(), iteration.getR());
-//        drawParabola(iteration, iterations.get(0).getL(), iterations.get(0).getR());
+        drawParabola(iteration, iterations.get(0).getL(), iterations.get(0).getR());
     }
 
     private void drawFormula(double l, double r) {
