@@ -1,6 +1,7 @@
 package lab01.optimizations;
 
-import java.util.ArrayList;
+import lab01.tools.Iteration;
+
 import java.util.List;
 import java.util.function.UnaryOperator;
 

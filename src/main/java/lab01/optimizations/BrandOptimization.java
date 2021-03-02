@@ -1,5 +1,8 @@
 package lab01.optimizations;
 
+import lab01.tools.Iteration;
+import lab01.tools.Triple;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
@@ -25,37 +28,42 @@ public class BrandOptimization implements UnaryOptimization {
         optimizationResult.add(new Iteration(l, r));
         double K = (3 - sqrt(5)) / 2;
         double x, w, v, u = 0, fx, fw, fv;
-        x = w = v = (l + r) / 2;
+        x = w = v = K * (r - l) + l;
         fx = fv = fw = formula.apply(x);
         double step, prevStep; // длины текущего и предыдущего шагов
         step = prevStep = r - l;
-        // TODO:: костыль
-        double prevL = l - 1, prevR = r - 1;
         while (abs(r - l) > epsilon) {
             double g = prevStep;
             prevStep = step;
+            double delta = epsilon * abs(x) + epsilon / 10;
+            if (abs(x - (l + r) / 2) + (r - l) / 2 <= 2 * delta) {
+                break;
+            }
             boolean check = true;
             if (notEquals(x, w, v) && notEquals(fx, fw, fv)) {
-                u = ParabolicMethod.makeOneIteration(x, w, v, formula);
-                if (u >= (l + epsilon) && u <= (r - epsilon) && abs(u - x) < g / 2) {
-                    step = abs(u - x);
+                u = ParabolicMethod.makeOneIteration(new Triple(x, w, v), formula).getX_2();
+                if (u >= l && u <= r && abs(u - x) < g / 2) {
+                    if (u - l < 2 * delta || r - u < 2 * delta) {
+                        u = x - sign(x - (l + r) / 2) * delta;
+                    }
                     check = false;
                 }
             }
             if (check) {
-                if (x < (r - l) / 2) {
+                if (x < (r + l) / 2) {
                     u = x + K * (r - x);
-                    step = r - x;
+                    prevStep = r - x;
                 } else {
                     u = x - K * (x - l);
-                    step = x - l;
+                    prevStep = x - l;
                 }
             }
-            if (abs(u - x) < epsilon) {
-                u = x + sign(u - x) * epsilon;
+            if (abs(u - x) < delta) {
+                u = x + sign(u - x) * delta;
             }
+            step = abs(u - x);
             double fu = formula.apply(u);
-            if (fu < fx) {
+            if (fu <= fx) {
                 if (u >= x) {
                     l = x;
                 } else {
@@ -78,7 +86,7 @@ public class BrandOptimization implements UnaryOptimization {
                     w = u;
                     fv = fw;
                     fw = fu;
-                } else if (fu < fv || v == x || v == w) {
+                } else if (fu <= fv || v == x || v == w) {
                     v = u;
                     fv = fu;
                 }

@@ -1,4 +1,4 @@
-package lab01.optimizations;
+package lab01.tools;
 
 public class Iteration {
     private double l, r;

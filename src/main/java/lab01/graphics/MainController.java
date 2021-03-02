@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import lab01.optimizations.*;
+import lab01.optimizations.UnaryOptimization;
+import lab01.tools.Iteration;
 
 import java.util.List;
 import java.util.Map;

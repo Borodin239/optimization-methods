@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import lab01.optimizations.Iteration;
+import lab01.tools.Iteration;
 
 import java.util.ArrayList;
 import java.util.List;
