@@ -1,6 +1,5 @@
 package lab01.optimizations;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -21,16 +20,14 @@ public class BrandOptimization extends BasicOptimization {
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
+        optimizationResult.add(new Iteration(l, r));
         double K = (3 - sqrt(5)) / 2;
         double x, w, v, u = 0, fx, fw, fv;
         x = w = v = (l + r) / 2;
         fx = fv = fw = formula.apply(x);
         double step, prevStep; // длины текущего и предыдущего шагов
         step = prevStep = r - l;
-        double prevR = r, prevL = l;
-        while (abs(r - l) > epsilon && checkIteration(prevL, prevR)) {
-            prevL = l;
-            prevR = r;
+        while (abs(r - l) > epsilon) {
             double g = prevStep;
             prevStep = step;
             boolean check = true;
