@@ -17,14 +17,14 @@ public class ParabolicMethod implements UnaryOptimization {
         Triple coefs = getCoeffs(res, formula);
         double currentIterationResult = - 0.5 * coefs.getX_2() / coefs.getX_1();
 
-        if (x_1 <= currentIterationResult && currentIterationResult <= x_2 && x_2 <= x_3) {
+        if (x_1 < currentIterationResult && currentIterationResult < x_2 && x_2 < x_3) {
             if (formula.apply(currentIterationResult) >= formula.apply(x_2)) {
                 x_1 = currentIterationResult;
             } else {
                 x_3 = x_2;
                 x_2 = currentIterationResult;
             }
-        } else if (x_1 <= x_2 && x_2 <= currentIterationResult && currentIterationResult <= x_3) {
+        } else if (x_1 < x_2 && x_2 < currentIterationResult && currentIterationResult < x_3) {
             if (formula.apply(currentIterationResult) <= formula.apply(x_2)) {
                 x_1 = x_2;
                 x_2 = currentIterationResult;
@@ -57,12 +57,23 @@ public class ParabolicMethod implements UnaryOptimization {
         return (x) -> coeffs.getX_1() * x * x + coeffs.getX_2() * x + coeffs.getX_3();
     }
 
+    private double getMiddlePoint(double l, double r, UnaryOperator<Double> formula) {
+        double y_l = formula.apply(l);
+        double y_r = formula.apply(r);
+        for (double i = l; i <= r; i += (r - l) / 100) {
+            if (y_l > formula.apply(i) && formula.apply(i) < y_r) {
+                return i;
+            }
+        }
+        return (l + r) / 2;
+    }
+
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
         List<Iteration> optimizationResult = new ArrayList<>();
         optimizationResult.add(new Iteration(l, r));
 
-        Triple lastIterationResult = new Triple(l, (l + r) / 2, r);
+        Triple lastIterationResult = new Triple(l, getMiddlePoint(l ,r, formula), r);
 
         while (true) {
             Triple currentIterationResult = makeOneIteration(lastIterationResult, formula);
@@ -72,7 +83,7 @@ public class ParabolicMethod implements UnaryOptimization {
 
             if (Math.abs(currentIterationResult.getX_2() - lastIterationResult.getX_2()) < epsilon) {
                 optimizationResult.add(new Iteration(currentIterationResult.getX_2() - epsilon,
-                        currentIterationResult.getX_2() + epsilon));
+                                                     currentIterationResult.getX_2() + epsilon));
                 break;
             }
             lastIterationResult = currentIterationResult;

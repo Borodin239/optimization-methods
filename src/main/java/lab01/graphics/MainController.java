@@ -38,8 +38,8 @@ public class MainController {
 
     private List<Iteration> iterations;
     private GraphicChart chart;
-//    private final UnaryOperator<Double> formula = (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3);
-    private final UnaryOperator<Double> formula = (x) -> (20 * x - 2.3) * (20 * x + 2.3) * (2 * x - 17) * (3 * x + 17);
+    private final UnaryOperator<Double> formula = (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3);
+//    private final UnaryOperator<Double> formula = (x) -> (20 * x - 2.3) * (20 * x + 2.3) * (2 * x - 17) * (3 * x + 17);
     private Map<String, UnaryOptimization> optimizationMap;
 
     public void build() {
