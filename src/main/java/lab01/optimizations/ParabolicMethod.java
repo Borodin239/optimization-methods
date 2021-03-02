@@ -13,6 +13,8 @@ public class ParabolicMethod extends BasicOptimization {
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
+        optimizationResult.add(new Iteration(l, r));
+
         double x_1 = l;
         double x_2 = (l + r) / 2;
         double x_3 = r;

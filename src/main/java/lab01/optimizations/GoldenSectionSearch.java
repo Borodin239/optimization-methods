@@ -8,6 +8,7 @@ public class GoldenSectionSearch extends BasicOptimization {
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
+        optimizationResult.add(new Iteration(l, r));
         double x1 = l + (r - l) / (GOLDEN_SECTION + 1);
         double x2 = r - (r - l) / (GOLDEN_SECTION + 1);
         double f1 = formula.apply(x1);
