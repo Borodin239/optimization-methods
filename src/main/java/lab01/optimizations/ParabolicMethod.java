@@ -43,6 +43,8 @@ public class ParabolicMethod extends BasicOptimization {
             optimizationResult.add(new Iteration(x_1, x_3));
 
             if (Math.abs(currentIterationResult - lastIterationResult) < epsilon) {
+                optimizationResult.add(new Iteration(currentIterationResult - epsilon,
+                                                        currentIterationResult + epsilon));
                 break;
             }
             lastIterationResult = currentIterationResult;
