@@ -18,6 +18,7 @@ public class GraphicChart {
     private XYChart.Series<Number, Number> outLeftBorderGraphicSeries;
     private XYChart.Series<Number, Number> outRightBorderGraphicSeries;
     private XYChart.Series<Number, Number> inBorderGraphicSeries;
+    private XYChart.Series<Number, Number> parabolaSeries;
     private List<XYChart.Series<Number, Number>> series;
 
     private List<XYChart.Data<Number, Number>> graphicData;
@@ -39,7 +40,6 @@ public class GraphicChart {
     }
 
     public void setGraphics(List<Iteration> iterations, double l, double r) {
-        series.forEach((a) -> a.getData().clear());
         this.iterations = iterations;
         buildGraphicData(l, r, formula);
         resizeChart();
@@ -77,6 +77,7 @@ public class GraphicChart {
         series.forEach((a) -> a.getData().clear());
         Iteration iteration = iterations.get(iterationNum);
         drawFormula(iteration.getL(), iteration.getR());
+        drawParabola(iteration, iterations.get(0).getL(), iterations.get(0).getR());
     }
 
     private void drawFormula(double l, double r) {
@@ -91,15 +92,26 @@ public class GraphicChart {
         }
     }
 
+    private void drawParabola(Iteration it, double l, double r) {
+        if (it.getParabola() == null) {
+            return;
+        }
+        for (double i = l; i < r; i += (r - l) / 1000) {
+            parabolaSeries.getData().add(new XYChart.Data<>(i, it.getParabola().apply(i)));
+        }
+    }
+
     private void setSeries() {
         inBorderGraphicSeries = new XYChart.Series<>();
         outLeftBorderGraphicSeries = new XYChart.Series<>();
         outRightBorderGraphicSeries = new XYChart.Series<>();
+        parabolaSeries = new XYChart.Series<>();
 
         series = new ArrayList<>();
         series.add(outLeftBorderGraphicSeries);
         series.add(inBorderGraphicSeries);
         series.add(outRightBorderGraphicSeries);
+        series.add(parabolaSeries);
 
         Platform.runLater(() -> lineChart.getData().addAll(series));
     }

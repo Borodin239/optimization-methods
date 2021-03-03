@@ -39,6 +39,7 @@ public class MainController {
     private List<Iteration> iterations;
     private GraphicChart chart;
     private final UnaryOperator<Double> formula = (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3);
+//    private final UnaryOperator<Double> formula = (x) -> (20 * x - 2.3) * (20 * x + 2.3) * (2 * x - 17) * (3 * x + 17);
     private Map<String, UnaryOptimization> optimizationMap;
 
     public void build() {
@@ -49,12 +50,16 @@ public class MainController {
             int newIterationIndex = findIteration((double) newV);
             if (iterations != null && newIterationIndex != findIteration((double) oldV)) {
                 Iteration iteration = iterations.get(newIterationIndex);
-                borderLabel.setText("[ " + iteration.getL() + " : " + iteration.getR() + " ]");
+                updateBorderLabel(iteration.getL(), iteration.getR());
                 chart.update(newIterationIndex);
             }
         });
         fillOptimizationMap();
         choiceBox.getItems().addAll(optimizationMap.keySet());
+    }
+
+    private void updateBorderLabel(double l, double r) {
+        borderLabel.setText(String.format("[ %.5f : %.5f ]", l, r));
     }
 
     private void fillOptimizationMap() {
@@ -81,6 +86,7 @@ public class MainController {
             if (methodName != null && optimizationMap.containsKey(methodName)) {
                 iterations = optimizationMap.get(methodName)
                         .getOptimization(l, r, (r - l) * 0.000001, formula);
+                updateBorderLabel(iterations.get(0).getL(), iterations.get(0).getR());
                 chart.setGraphics(iterations, l, r);
             }
         } catch (NumberFormatException ignored) {

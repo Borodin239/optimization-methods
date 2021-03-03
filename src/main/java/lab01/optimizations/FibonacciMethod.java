@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 
 public class FibonacciMethod implements UnaryOptimization {
+    private final List<Double> fibonacciNumbers = new ArrayList<>();
 
-    private List<Double> getFibonacciNumbers(double l, double r, double epsilon) {
-        List<Double> fibonacciNumbers = new ArrayList<>();
+    private void getFibonacciNumbers(double l, double r, double epsilon) {
         fibonacciNumbers.add(1.0);
         fibonacciNumbers.add(1.0);
         int pos = 2;
@@ -17,14 +17,15 @@ public class FibonacciMethod implements UnaryOptimization {
             fibonacciNumbers.add(fibonacciNumbers.get(pos - 1) + fibonacciNumbers.get(pos - 2));
             pos++;
         }
-        return fibonacciNumbers;
     }
 
     @Override
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
         List<Iteration> optimizationResult = new ArrayList<>();
         optimizationResult.add(new Iteration(l, r));
-        final List<Double> fibonacciNumbers = getFibonacciNumbers(l, r, epsilon);
+
+        fibonacciNumbers.clear();
+        getFibonacciNumbers(l, r, epsilon);
         final int n = fibonacciNumbers.size() - 3;
         final double l_0 = l;
         final double r_0 = r;
@@ -38,10 +39,8 @@ public class FibonacciMethod implements UnaryOptimization {
             } else {
                 l = x_1;
             }
-
             optimizationResult.add(new Iteration(l, r));
         }
-
         return optimizationResult;
     }
 }

@@ -1,7 +1,10 @@
 package lab01.tools;
 
+import java.util.function.UnaryOperator;
+
 public class Iteration {
     private double l, r;
+    private UnaryOperator<Double> parabola;
 
     public Iteration(double l, double r) {
         this.l = l;
@@ -22,5 +25,13 @@ public class Iteration {
 
     public void setR(double r) {
         this.r = r;
+    }
+
+    public UnaryOperator<Double> getParabola() {
+        return parabola;
+    }
+
+    public void setParabola(UnaryOperator<Double> parabola) {
+        this.parabola = parabola;
     }
 }
