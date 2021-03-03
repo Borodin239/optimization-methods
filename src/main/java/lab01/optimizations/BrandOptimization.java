@@ -26,10 +26,21 @@ public class BrandOptimization implements UnaryOptimization {
     public List<Iteration> getOptimization(double l, double r, double epsilon, UnaryOperator<Double> formula) {
         List<Iteration> optimizationResult = new ArrayList<>();
         optimizationResult.add(new Iteration(l, r));
+        double prevR = r;
+        double prevL = l;
         double K = (3 - sqrt(5)) / 2;
         double x, w, v, u = 0, fx, fw, fv;
         x = w = v = K * (r - l) + l;
         fx = fv = fw = formula.apply(x);
+        System.out.print("w = ");
+        System.out.printf("%.5f", (w));
+        System.out.print("; v = ");
+        System.out.printf("%.5f", (v));
+        System.out.print("; f(w) = ");
+        System.out.printf("%.5f", (formula.apply(w)));
+        System.out.print("; f(v) = ");
+        System.out.printf("%.5f", (formula.apply(v)));
+        System.out.println();
         double step, prevStep; // длины текущего и предыдущего шагов
         step = prevStep = r - l;
         while (abs(r - l) > epsilon) {
@@ -92,7 +103,17 @@ public class BrandOptimization implements UnaryOptimization {
                 }
             }
             optimizationResult.add(new Iteration(l, r));
+            System.out.print("w = ");
+            System.out.printf("%.5f", (w));
+            System.out.print("; v = ");
+            System.out.printf("%.5f", (v));
+            System.out.print("; f(w) = ");
+            System.out.printf("%.5f", (formula.apply(w)));
+            System.out.print("; f(v) = ");
+            System.out.printf("%.5f", (formula.apply(v)));
+            System.out.println();
         }
+        System.out.println();
         return optimizationResult;
     }
 }
