@@ -38,8 +38,9 @@ public class MainController {
 
     private List<Iteration> iterations;
     private GraphicChart chart;
-    private final UnaryOperator<Double> formula = (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3);
-//    private final UnaryOperator<Double> formula = (x) -> (20 * x - 2.3) * (20 * x + 2.3) * (2 * x - 17) * (3 * x + 17);
+//    private final UnaryOperator<Double> formula = (x) -> 0.2 * x * Math.log10(x) + (x - 2.3) * (x - 2.3);
+    private final UnaryOperator<Double> formula = (x) -> (20 * x - 2.3) * (20 * x + 2.3) * (2 * x - 17) * (3 * x + 17);
+//    private final UnaryOperator<Double> formula = (x) -> x * x * x * x * x - x * x * x + x * x;
     private Map<String, UnaryOptimization> optimizationMap;
 
     public void build() {
@@ -85,7 +86,7 @@ public class MainController {
             String methodName = choiceBox.getValue();
             if (methodName != null && optimizationMap.containsKey(methodName)) {
                 iterations = optimizationMap.get(methodName)
-                        .getOptimization(l, r, (r - l) * 0.000001, formula);
+                        .getOptimization(l, r, (r - l) * 0.001, formula);
                 updateBorderLabel(iterations.get(0).getL(), iterations.get(0).getR());
                 chart.setGraphics(iterations, l, r);
             }
