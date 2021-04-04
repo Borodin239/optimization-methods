@@ -14,7 +14,7 @@ public class BasicGradient implements Gradient {
 
     @Override
     public List<Iteration> getOptimization(QuadraticForm form, double epsilon, double... start) {
-        this.alpha = 2 / (form.getBigL() + form.getSmallL());
+        this.alpha = getAlpha(form, epsilon, start);
         this.epsilon = epsilon;
 
         List<Iteration> result = new ArrayList<>();
@@ -47,5 +47,9 @@ public class BasicGradient implements Gradient {
 
     protected Vector getNextPoint(QuadraticForm form, Vector x) {
         return x.subtract(form.getGradient(x).multiply(alpha));
+    }
+
+    protected double getAlpha(QuadraticForm form, double epsilon, double... start) {
+        return 2 / (form.getBigL() + form.getSmallL());
     }
 }

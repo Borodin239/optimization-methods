@@ -4,21 +4,19 @@ import lab1.optimizations.unary.GoldenSectionSearch;
 import lab1.optimizations.unary.UnaryOptimization;
 import lab2.optimization.QuadraticForm;
 import org.la4j.Vector;
+import org.la4j.vector.dense.BasicVector;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class FastestGradient extends BasicGradient {
+
     protected Vector getIteration(QuadraticForm form, Vector x) {
-        Vector y;
-        while (form.apply(x) <= form.apply(y = getNextPoint(form, x))) {
-            alpha /= 2;
-        }
+        Vector y = getNextPoint(form, x);
         UnaryOptimization op = new GoldenSectionSearch();
 
-        final Vector z = y;
         Function<Double, Vector> slice =
-                (val) -> x.add(z.subtract(x).multiply(val));
+                (val) -> x.add(y.subtract(x).multiply(val));
 
         UnaryOperator<Double> slicedFunc =
                 (val) -> form.apply(slice.apply(val));
@@ -27,4 +25,8 @@ public class FastestGradient extends BasicGradient {
         return slice.apply(scale);
     }
 
+    @Override
+    protected double getAlpha(QuadraticForm form, double epsilon, double... start) {
+        return new BasicVector(start).euclideanNorm() * 4;
+    }
 }
