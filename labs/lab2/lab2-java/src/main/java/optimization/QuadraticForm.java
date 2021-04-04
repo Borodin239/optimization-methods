@@ -1,23 +1,24 @@
-package gradient;
+package optimization;
 
 import org.la4j.Matrix;
+import org.la4j.Vector;
 import org.la4j.decomposition.EigenDecompositor;
 import org.la4j.matrix.dense.Basic2DMatrix;
+import org.la4j.vector.dense.BasicVector;
 
-import java.util.Arrays;
 import java.util.function.BinaryOperator;
 
 public class QuadraticForm {
 
-    private final double[][] a;
-    private final double[] b;
+    private final Matrix a;
+    private final Vector b;
     private final double c;
 
     public QuadraticForm(double[][] a, double[] b, double c) {
         check(a, b, c);
 
-        this.a = a;
-        this.b = b;
+        this.a = new Basic2DMatrix(a);
+        this.b = new BasicVector(b);
         this.c = c;
     }
 
@@ -29,11 +30,11 @@ public class QuadraticForm {
         this(a, new double[a.length]);
     }
 
-    public double[][] getA() {
+    public Matrix getA() {
         return a;
     }
 
-    public double[] getB() {
+    public Vector getB() {
         return b;
     }
 
@@ -42,47 +43,46 @@ public class QuadraticForm {
     }
 
     public int size() {
-        return a.length;
+        return a.columns();
     }
 
-    private void checkLength(double[] x) {
-        if (x.length != size()) {
+    private void checkLength(Vector x) {
+        if (x.length() != size()) {
             throw new IllegalArgumentException(
                     size() + " arguments must be providied");
         }
     }
 
-    public double apply(double ... x) {
+    public double apply(Vector x) {
         checkLength(x);
         double result = 0;
         for (int i = 0; i < size(); i++) {
             for (int j = 0; j < size(); j++) {
-                result += x[i] * a[i][j] * x[j];
+                result += x.get(i) * a.get(i, j) * x.get(j);
             }
         }
         for (int i = 0; i < size(); i++) {
-            result += x[i] * b[i];
+            result += x.get(i) * b.get(i);
         }
         result += c;
         return result;
     }
 
-    public double[] gradient(double... x) {
+    public Vector getGradient(Vector x) {
         checkLength(x);
 
         double[] g = new double[size()];
         for (int i = 0; i < size(); i++) {
             for (int j = 0; j < size(); j++) {
-                g[i] += a[i][j] * x[j];
+                g[i] += a.get(i, j) * x.get(j);
             }
-            g[i] += b[i];
+            g[i] += b.get(i);
         }
-        return g;
+        return new BasicVector(g);
     }
 
     private double[] getEigenValues() {
-        Matrix matrix = new Basic2DMatrix(a);
-        Matrix decomposed = new EigenDecompositor(matrix).decompose()[1];
+        Matrix decomposed = new EigenDecompositor(a).decompose()[1];
         double[] res = new double[size()];
         for (int i = 0; i < size(); i++) {
             res[i] = decomposed.get(i, i);
@@ -107,7 +107,7 @@ public class QuadraticForm {
         return getEigen(Math::min);
     }
 
-    private static boolean doubleEqual(double a, double b) {
+    public static boolean doubleEqual(double a, double b) {
         return Math.abs(a - b) < 1e-10;
     }
 

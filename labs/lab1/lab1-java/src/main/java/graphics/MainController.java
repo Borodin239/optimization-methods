@@ -3,7 +3,7 @@ package graphics;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
-import optimizations.*;
+import optimization.*;
 import tools.Iteration;
 
 import java.util.List;

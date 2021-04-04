@@ -1,4 +1,4 @@
-package optimizations;
+package optimization;
 
 import tools.Iteration;
 import tools.Triple;

@@ -1,4 +1,4 @@
-import optimizations.*;
+import optimization.*;
 
 public class Main {
 
