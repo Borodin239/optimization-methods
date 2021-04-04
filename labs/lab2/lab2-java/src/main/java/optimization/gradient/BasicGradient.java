@@ -13,7 +13,7 @@ public class BasicGradient implements Gradient {
     private double alpha;
 
     @Override
-    public List<Iteration> getGradient(QuadraticForm form, double epsilon, double... start) {
+    public List<Iteration> getOptimization(QuadraticForm form, double epsilon, double... start) {
         alpha = 2 / (form.getBigL() + form.getSmallL());
 
         List<Iteration> result = new ArrayList<>();

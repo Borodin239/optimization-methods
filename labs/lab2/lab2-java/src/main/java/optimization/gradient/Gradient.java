@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface Gradient {
 
-    List<Iteration> getGradient(QuadraticForm form, double epsilon, double ... start);
+    List<Iteration> getOptimization(QuadraticForm form, double epsilon, double ... start);
 }
