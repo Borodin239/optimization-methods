@@ -6,7 +6,12 @@ import org.la4j.decomposition.EigenDecompositor;
 import org.la4j.matrix.dense.Basic2DMatrix;
 import org.la4j.vector.dense.BasicVector;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BinaryOperator;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 public class QuadraticForm {
 
@@ -130,5 +135,57 @@ public class QuadraticForm {
                 }
             }
         }
+    }
+
+    // for 2d only!
+    List<Vector> getLevel(Vector start, double deltaLength, double angleParts) {
+        if (size() != 2) {
+            throw new IllegalArgumentException("Size must be 2");
+        }
+        if (start.length() != 2) {
+            throw new IllegalArgumentException("Start length must be 2");
+        }
+        Vector delta = turnOnAngle(getGradient(start), Math.PI / 2);
+        delta = delta.divide(delta.euclideanNorm()).multiply(deltaLength);
+
+        Vector cur = start;
+        Vector cmp = delta;
+        double angle = Math.PI * 2 / angleParts;
+
+        List<Vector> level = new ArrayList<>();
+        level.add(cur);
+
+        delta = turnOnAngle(delta, angle);
+        boolean negativeAngReached = false;
+
+        while (getAngle(delta, cmp) <= 0 || !negativeAngReached) {
+            negativeAngReached = negativeAngReached | getAngle(delta, cmp) <= 0;
+
+            while (apply(cur) < apply(cur.add(delta))) {
+                delta = turnOnAngle(delta, angle);
+            }
+            cur = cur.add(delta);
+            level.add(cur);
+        }
+        return level;
+    }
+
+    private double getAngle(Vector a, Vector b) {
+        double x1 = a.get(0);
+        double y1 = a.get(1);
+        double x2 = b.get(0);
+        double y2 = b.get(1);
+//        return Math.atan2(y2, x2) - Math.atan2(y1, x1);
+        return Math.atan2(y2 * x1 - x2 * y1, x1 * x2 + y1 * y2);
+    }
+
+    private Vector turnOnAngle(Vector vec, double angle) {
+        double x = vec.get(0);
+        double y = vec.get(1);
+
+        double x1 = x * cos(angle) + y * sin(angle);
+        double y1 = y * cos(angle) - x * sin(angle);
+
+        return new BasicVector(new double[] {x1, y1});
     }
 }
