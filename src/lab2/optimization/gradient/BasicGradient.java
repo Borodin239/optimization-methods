@@ -19,8 +19,7 @@ public class BasicGradient implements Gradient {
 
         List<Iteration> result = new ArrayList<>();
 
-        Vector prev = getIteration(form, new BasicVector(start));
-        result.add(new Iteration(prev));
+        Vector prev = new BasicVector(start);
 
         Vector cur = getIteration(form, prev);
         result.add(new Iteration(cur));
@@ -39,7 +38,7 @@ public class BasicGradient implements Gradient {
 
     protected Vector getIteration(QuadraticForm form, Vector x) {
         Vector y;
-        while (form.apply(x) <= form.apply(y = getNextPoint(form, x))) {
+        while (form.apply(x) <= form.apply(y = getNextPoint(form, x)) && alpha > epsilon) {
             alpha /= 2;
         }
         return y;

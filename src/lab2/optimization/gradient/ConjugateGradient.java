@@ -18,21 +18,23 @@ public class ConjugateGradient extends BasicGradient {
 
     @Override
     protected Vector getNextPoint(QuadraticForm form, Vector x) {
-        double currGradientNorm = form.getGradient(x).euclideanNorm();
-        euclideanNormsSquare.add(currGradientNorm * currGradientNorm);
-        double b = euclideanNormsSquare.get(euclideanNormsSquare.size() - 1) /
-                   euclideanNormsSquare.get(euclideanNormsSquare.size() - 2);
-        return ys.get(ys.size() - 1).multiply(b).subtract(form.getGradient(x));
+        return x.add(ys.get(ys.size() - 1). multiply(alpha));
     }
 
     protected Vector getIteration(QuadraticForm form, Vector x) {
         Vector y;
+        Vector xNew = ys.isEmpty() ? x : getNextPoint(form, x);
         if (ys.size() == 0) {
-            y = form.getGradient(x).multiply(-1);
-            double currGradientNorm = form.getGradient(x).euclideanNorm();
+            y = form.getGradient(xNew).multiply(-1);
+            double currGradientNorm = form.getGradient(xNew).euclideanNorm();
             euclideanNormsSquare.add(currGradientNorm * currGradientNorm);
         } else {
-            y = getNextPoint(form, x);
+            double currGradientNorm = form.getGradient(xNew).euclideanNorm();
+            euclideanNormsSquare.add(currGradientNorm * currGradientNorm);
+            double b = euclideanNormsSquare.get(euclideanNormsSquare.size() - 1) /
+                    euclideanNormsSquare.get(euclideanNormsSquare.size() - 2);
+            y = ys.get(ys.size() - 1).multiply(b).subtract(form.getGradient(xNew));
+
         }
         ys.add(y);
         return y;
