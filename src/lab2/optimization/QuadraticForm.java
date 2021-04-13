@@ -79,7 +79,7 @@ public class QuadraticForm {
         double[] g = new double[size()];
         for (int i = 0; i < size(); i++) {
             for (int j = 0; j < size(); j++) {
-                g[i] += a.get(i, j) * x.get(j);
+                g[i] += 2 * a.get(i, j) * x.get(j);
             }
             g[i] += b.get(i);
         }
