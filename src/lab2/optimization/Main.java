@@ -18,16 +18,13 @@ public class Main {
         System.out.println("];");
     }
 
-
-
-
     public static void main(String[] args) {
         QuadraticForm form = new QuadraticForm(new double[][]{
                 {1, 0},
                 {0, 4},
         }, new double[] {4, 2});
         double x = 10, y = -10;
-        Gradient opt = new FastestGradient();
+        Gradient opt = new ConjugateGradient();
         List<Iteration> res = opt.getOptimization(form, 0.001, x, y);
 
         /// 22222222222222222222222222222222222

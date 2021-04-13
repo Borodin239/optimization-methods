@@ -11,18 +11,10 @@ import java.util.function.UnaryOperator;
 
 public class FastestGradient extends BasicGradient {
 
+    @Override
     protected Vector getIteration(QuadraticForm form, Vector x) {
         Vector y = getNextPoint(form, x);
-        UnaryOptimization op = new GoldenSectionSearch();
-
-        Function<Double, Vector> slice =
-                (val) -> x.add(y.subtract(x).multiply(val));
-
-        UnaryOperator<Double> slicedFunc =
-                (val) -> form.apply(slice.apply(val));
-
-        double scale = op.getLastIteration(0, 1, epsilon, slicedFunc).getL();
-        return slice.apply(scale);
+        return Gradient.getMinOnSlice(form, x, y, epsilon);
     }
 
     @Override
