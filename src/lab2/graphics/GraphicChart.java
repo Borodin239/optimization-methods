@@ -6,6 +6,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import lab2.optimization.Iteration;
 import lab2.optimization.QuadraticForm;
+import org.la4j.Vector;
+import org.la4j.vector.dense.BasicVector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +34,17 @@ public class GraphicChart {
         lineChart.getXAxis().setAutoRanging(false);
         lineChart.getYAxis().setAutoRanging(false);
         lineChart.setCreateSymbols(false);
+        lineChart.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
 
         setSeries();
     }
 
-    public void setGraphics(List<Iteration> iterations, double x, double y) {
+    public void setGraphics(List<Iteration> iterations) {
+        dotsGraphicSeries.getNode().setStyle("-fx-stroke-width: 2px;");
         this.iterations = iterations;
         buildGraphicData();
         resizeChart();
+        drawLevels();
         update(0);
     }
 
@@ -70,9 +75,13 @@ public class GraphicChart {
         yAxis.setUpperBound(yMax + borderY);
     }
 
+    public void clearSeries() {
+        series.forEach(a -> a.getData().clear());
+    }
+
 
     public void update(int iterationNum) {
-        series.forEach((a) -> a.getData().clear());
+        dotsGraphicSeries.getData().clear();
         Iteration iteration = iterations.get(iterationNum);
         drawFormula(iteration.getX().get(0), iteration.getX().get(1));
     }
@@ -86,18 +95,15 @@ public class GraphicChart {
             }
         }
     }
-    /*
 
-    private void drawParabola(Iteration it, double l, double r) {
-        if (it.getParabola() == null) {
-            return;
-        }
-        for (double i = l; i < r; i += (r - l) / 1000) {
-            parabolaSeries.getData().add(new XYChart.Data<>(i, it.getParabola().apply(i)));
+    private void drawLevels() {
+        for (int i = 0; i < iterations.size() && i < 8; i++) {
+            List<Vector> temp = form.getLevel(iterations.get(i).getX(), 0.01, 40000);
+            for (Vector v : temp) {
+                series.get(i + 1).getData().add(new XYChart.Data<>(v.get(0), v.get(1)));
+            }
         }
     }
-
-     */
 
     private void setSeries() {
 
@@ -105,7 +111,8 @@ public class GraphicChart {
         dotsGraphicSeries = new XYChart.Series<>();
         series.add(dotsGraphicSeries);
         for (int i = 0; i < 50; i++) {
-            series.add(new XYChart.Series<>());
+            XYChart.Series<Number, Number> temp = new XYChart.Series<>();
+            series.add(temp);
         }
 
         Platform.runLater(() -> lineChart.getData().addAll(series));

@@ -19,7 +19,9 @@ public class Graphics extends Application {
         GraphicsController controller = fxmlLoader.getController();
         controller.build();
         primaryStage.setTitle("Графики с линиями уровня функций и траектроиями методов");
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("lab2/graphics/style.css");
+        primaryStage.setScene(scene);
         primaryStage.setAlwaysOnTop(false);
         primaryStage.show();
     }

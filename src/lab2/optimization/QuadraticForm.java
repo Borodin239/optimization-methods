@@ -138,7 +138,7 @@ public class QuadraticForm {
     }
 
     // for 2d only!
-    List<Vector> getLevel(Vector start, double deltaLength, double angleParts) {
+    public List<Vector> getLevel(Vector start, double deltaLength, double angleParts) {
         if (size() != 2) {
             throw new IllegalArgumentException("Size must be 2");
         }

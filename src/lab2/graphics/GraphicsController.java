@@ -91,8 +91,9 @@ public class GraphicsController {
             if (methodName != null && optimizationMap.containsKey(methodName)) {
                 iterations = optimizationMap.get(methodName)
                         .getOptimization(form, 0.001, x, y);
+                chart.clearSeries();
                 updateBorderLabel(iterations.get(0).getX().get(0), iterations.get(0).getX().get(1));
-                chart.setGraphics(iterations, x, y);
+                chart.setGraphics(iterations);
             }
         } catch (NumberFormatException ignored) {
             // do nothing
