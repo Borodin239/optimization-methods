@@ -39,7 +39,7 @@ public class BasicGradient implements Gradient {
 
     protected Vector getIteration(QuadraticForm form, Vector x) {
         Vector y;
-        while (form.apply(x) <= form.apply(y = getNextPoint(form, x))) {
+        while (form.apply(x) <= form.apply(y = getNextPoint(form, x)) && alpha > epsilon) {
             alpha /= 2;
         }
         return y;
