@@ -24,6 +24,9 @@ public class GraphicsController {
     Slider iterationSlider;
 
     @FXML
+    Slider zoomSlider;
+
+    @FXML
     TextField xField;
 
     @FXML
