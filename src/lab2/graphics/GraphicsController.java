@@ -44,6 +44,9 @@ public class GraphicsController {
     @FXML
     Label borderLabel;
 
+    @FXML
+    CheckBox showLevels;
+
     private List<Iteration> iterations;
     private GraphicChart chart;
     QuadraticForm form = new QuadraticForm(new double[][]{
@@ -56,6 +59,7 @@ public class GraphicsController {
         chart = new GraphicChart(lineChart, form);
 
         evaluateButton.onActionProperty().setValue((a) -> evaluate());
+        applyButton.onActionProperty().setValue((a) -> setShowLevels(showLevels.isSelected()));
         iterationSlider.valueProperty().addListener((a, oldV, newV) -> {
             int newIterationIndex = findIteration((double) newV);
             if (iterations != null && newIterationIndex != findIteration((double) oldV)) {
@@ -85,12 +89,21 @@ public class GraphicsController {
                 * (iterations.size() - 1)));
     }
 
+    private void setShowLevels(boolean set) {
+        if (set) {
+            chart.hideLevels();
+        } else {
+            chart.showLevels();
+        }
+    }
+
     private void evaluate() {
         try {
             double x = Double.parseDouble(xField.getText());
             double y = Double.parseDouble(yField.getText());
 
             String methodName = choiceBox.getValue();
+            showLevels.setSelected(true);
             if (methodName != null && optimizationMap.containsKey(methodName)) {
                 iterations = optimizationMap.get(methodName)
                         .getOptimization(form, 0.001, x, y);

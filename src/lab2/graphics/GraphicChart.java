@@ -7,7 +7,6 @@ import javafx.scene.chart.XYChart;
 import lab2.optimization.Iteration;
 import lab2.optimization.QuadraticForm;
 import org.la4j.Vector;
-import org.la4j.vector.dense.BasicVector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +92,18 @@ public class GraphicChart {
             if (dot.getXValue().equals(x) && dot.getYValue().equals(y)) {
                 break;
             }
+        }
+    }
+
+    public void hideLevels() {
+        for (int i = 0; i < iterations.size() && i < 8; i++) {
+            series.get(i + 1).getNode().setStyle("-fx-stroke-width: 1px;");
+        }
+    }
+
+    public void showLevels() {
+        for (int i = 0; i < iterations.size() && i < 8; i++) {
+            series.get(i + 1).getNode().setStyle("-fx-stroke-width: 0px;");
         }
     }
 
