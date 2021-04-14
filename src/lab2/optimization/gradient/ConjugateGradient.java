@@ -22,13 +22,22 @@ public class ConjugateGradient extends BasicGradient {
     }
 
     protected Vector getIteration(QuadraticForm form, Vector x) {
+        if (ps.size() == form.size()) {
+            reinit(form, x);
+        }
         if (ps.size() == 0) {
-            euclideanNormsSquare.add(Math.pow(form.getGradient(x).euclideanNorm(), 2));
-            ps.add(form.getGradient(x).multiply(-1));
+            reinit(form, x);
             return x;
         } else {
             return computeNext(form, x);
         }
+    }
+
+    private void reinit(QuadraticForm form, Vector x) {
+        ps.clear();
+        euclideanNormsSquare.clear();
+        euclideanNormsSquare.add(Math.pow(form.getGradient(x).euclideanNorm(), 2));
+        ps.add(form.getGradient(x).multiply(-1));
     }
 
     protected Vector getNextPoint(QuadraticForm form, Vector x, Vector p) {
