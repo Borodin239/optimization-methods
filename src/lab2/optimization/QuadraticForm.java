@@ -63,7 +63,7 @@ public class QuadraticForm {
         double result = 0;
         for (int i = 0; i < size(); i++) {
             for (int j = 0; j < size(); j++) {
-                result += x.get(i) * a.get(i, j) * x.get(j);
+                result += x.get(i) * a.get(i, j) * x.get(j) * 0.5;
             }
         }
         for (int i = 0; i < size(); i++) {
@@ -79,7 +79,7 @@ public class QuadraticForm {
         double[] g = new double[size()];
         for (int i = 0; i < size(); i++) {
             for (int j = 0; j < size(); j++) {
-                g[i] += 2 * a.get(i, j) * x.get(j);
+                g[i] += a.get(i, j) * x.get(j);
             }
             g[i] += b.get(i);
         }
@@ -175,7 +175,6 @@ public class QuadraticForm {
         double y1 = a.get(1);
         double x2 = b.get(0);
         double y2 = b.get(1);
-//        return Math.atan2(y2, x2) - Math.atan2(y1, x1);
         return Math.atan2(y2 * x1 - x2 * y1, x1 * x2 + y1 * y2);
     }
 

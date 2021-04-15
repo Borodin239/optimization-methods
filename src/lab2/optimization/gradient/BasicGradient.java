@@ -19,14 +19,10 @@ public class BasicGradient implements Gradient {
 
         List<Iteration> result = new ArrayList<>();
 
-        Vector prev = getIteration(form, new BasicVector(start));
-        result.add(new Iteration(prev));
-
-        Vector cur = getIteration(form, prev);
+        Vector cur = getIteration(form, new BasicVector(start));
         result.add(new Iteration(cur));
 
-        while (distance(cur, prev) > epsilon) {
-            prev = cur;
+        while (form.getGradient(cur).euclideanNorm() > epsilon) {
             cur = getIteration(form, cur);
             result.add(new Iteration(cur));
         }

@@ -50,9 +50,9 @@ public class GraphicsController {
     private List<Iteration> iterations;
     private GraphicChart chart;
     QuadraticForm form = new QuadraticForm(new double[][]{
-            {1, 0},
-            {0, 4},
-    }, new double[]{4, 2});
+            {2, 0},
+            {0, 8},
+    }, new double[] {4, 2});
     private Map<String, Gradient> optimizationMap;
 
     public void build() {

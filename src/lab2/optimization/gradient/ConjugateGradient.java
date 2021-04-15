@@ -48,5 +48,4 @@ public class ConjugateGradient extends BasicGradient {
     protected double getAlpha(QuadraticForm form, double epsilon, double... start) {
         return new BasicVector(start).euclideanNorm() * 4;
     }
-
 }
