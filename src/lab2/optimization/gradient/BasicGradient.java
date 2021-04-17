@@ -18,6 +18,7 @@ public class BasicGradient implements Gradient {
         this.epsilon = epsilon;
 
         List<Iteration> result = new ArrayList<>();
+        result.add(new Iteration(start));
 
         Vector cur = getIteration(form, new BasicVector(start));
         result.add(new Iteration(cur));
