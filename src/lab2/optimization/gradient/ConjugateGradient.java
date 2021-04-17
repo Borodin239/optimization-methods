@@ -22,23 +22,24 @@ public class ConjugateGradient extends BasicGradient {
     }
 
     protected Vector computeNext(QuadraticForm form, Vector x) {
-        double gradientNormK = euclideanNormsSquare.get(euclideanNormsSquare.size() - 1);
+        double gradientSquareK = euclideanNormsSquare.get(euclideanNormsSquare.size() - 1);
 
 //        Vector to = getNextPoint(form, x, ps.get(ps.size() - 1));
 //        Vector x1 = Gradient.getMinOnSlice(form, x, to, epsilon);
         Vector pk = ps.get(ps.size() - 1);
-        double ak = gradientNormK / mul(form.getA(), pk);
+        double ak = gradientSquareK / mul(form.getA(), pk);
         Vector x1 = x.add(pk.multiply(ak));
 
-        double gradientNormK1 = form.getGradient(x1).euclideanNorm();
-        euclideanNormsSquare.add(gradientNormK1 * gradientNormK1);
-        double b = gradientNormK1 / gradientNormK;
-        ps.add(ps.get(ps.size() - 1).multiply(b).subtract(form.getGradient(x1)));
+        Vector x1Gradient= form.getGradient(x1);
+        double gradientSquareK1 = Math.pow(x1Gradient.euclideanNorm(), 2);
+        euclideanNormsSquare.add(gradientSquareK1);
+        double b = gradientSquareK1 / gradientSquareK;
+        ps.add(pk.multiply(b).subtract(x1Gradient));
         return x1;
     }
 
     protected Vector getIteration(QuadraticForm form, Vector x) {
-        if (ps.size() == form.size() || ps.isEmpty()) {
+        if (ps.size() == (form.size() + 1) || ps.isEmpty()) {
             reinit(form, x);
         }
         return computeNext(form, x);
