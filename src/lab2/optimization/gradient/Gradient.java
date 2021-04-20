@@ -23,7 +23,7 @@ public interface Gradient {
 
         UnaryOperator<Double> slicedFunc =
                 (val) -> form.apply(slice.apply(val));
-        double scale = op.getLastIteration(0, 1, epsilon * 0.00001, slicedFunc).getL();
+        double scale = op.getLastIteration(0, 1, 1e-9, slicedFunc).getL();
         return slice.apply(scale);
     }
 }
