@@ -25,11 +25,11 @@ public class Main {
 //                {0, 4},
 //        }, new double[] {4, 2});
         QuadraticForm form = new QuadraticForm(new double[][]{
-                {2, 0},
-                {0, 8}
-        }, new double[] {4, 2});
+                {508, 506},
+                {506, 508}
+        }, new double[] {50, 130}, -111);
         double x = 0, y = 5;
-        Gradient opt = new ConjugateGradient();
+        Gradient opt = new FastestGradient();
         List<Iteration> res = opt.getOptimization(form, 0.001, x, y);
 
         for (int i = 0; i < res.size(); i++) {

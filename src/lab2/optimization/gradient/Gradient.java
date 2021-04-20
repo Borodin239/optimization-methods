@@ -1,5 +1,6 @@
 package lab2.optimization.gradient;
 
+import lab1.optimizations.unary.DichotomyMethod;
 import lab1.optimizations.unary.GoldenSectionSearch;
 import lab1.optimizations.unary.UnaryOptimization;
 import lab2.optimization.Iteration;
@@ -15,14 +16,14 @@ public interface Gradient {
     List<Iteration> getOptimization(QuadraticForm form, double epsilon, double ... start);
 
     static Vector getMinOnSlice(QuadraticForm form, Vector x, Vector y, double epsilon) {
-        UnaryOptimization op = new GoldenSectionSearch();
+        UnaryOptimization op = new DichotomyMethod();
 
         Function<Double, Vector> slice =
                 (val) -> x.add(y.subtract(x).multiply(val));
 
         UnaryOperator<Double> slicedFunc =
                 (val) -> form.apply(slice.apply(val));
-        double scale = op.getLastIteration(0, 1, epsilon, slicedFunc).getL();
+        double scale = op.getLastIteration(0, 1, epsilon * 0.00001, slicedFunc).getL();
         return slice.apply(scale);
     }
 }
