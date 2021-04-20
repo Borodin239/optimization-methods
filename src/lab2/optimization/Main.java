@@ -18,6 +18,7 @@ public class Main {
         System.out.println("];");
     }
 
+// 4564564
     public static void main(String[] args) {
 //        QuadraticForm form = new QuadraticForm(new double[][]{
 //                {1, 0},
