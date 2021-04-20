@@ -20,14 +20,14 @@ public class Main {
 
 // 4564564
     public static void main(String[] args) {
-        QuadraticForm form = new QuadraticForm(new double[][]{
-                {1, 0},
-                {0, 4},
-        }, new double[] {4, 2});
 //        QuadraticForm form = new QuadraticForm(new double[][]{
-//                {508, 506},
-//                {506, 508}
-//        }, new double[] {50, 130}, -111);
+//                {1, 0},
+//                {0, 4},
+//        }, new double[] {4, 2});
+        QuadraticForm form = new QuadraticForm(new double[][]{
+                {508, 506},
+                {506, 508}
+        }, new double[] {50, 130}, -111);
         double x = 10, y = 10;
         Gradient opt = new ConjugateGradient();
         List<Iteration> res = opt.getOptimization(form, 0.001, x, y);
