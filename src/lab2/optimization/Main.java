@@ -24,11 +24,11 @@ public class Main {
 //                {0, 4},
 //        }, new double[] {4, 2});
         QuadraticForm form = new QuadraticForm(new double[][]{
-                {2, 0},
-                {0, 8}
-        }, new double[] {4, 2});
-        double x = 0, y = 5;
-        Gradient opt = new ConjugateGradient();
+                {508, 506},
+                {506, 508}
+        }, new double[] {50, 130}, -111);
+        double x = 10, y = 10;
+        Gradient opt = new FastestGradient();
         List<Iteration> res = opt.getOptimization(form, 0.001, x, y);
 
         for (int i = 0; i < res.size(); i++) {
@@ -36,16 +36,16 @@ public class Main {
                     + " " + res.get(i).getX().get(1));
         }
         /// 22222222222222222222222222222222222
-//        System.out.print("a = ");
-//        printI(res, 0, x);
-//        System.out.print("b = ");
-//        printI(res, 1, y);
-//
-//        System.out.println("x" + "\t\t\t\t" + "y");
-//        for (int i = 0; i < res.size(); i++) {
-//            System.out.format(i + "\t%03f\t\t%03f\n", res.get(i).getX().get(0),
-//                    res.get(i).getX().get(1));
-//        }
+        System.out.print("a = ");
+        printI(res, 0, x);
+        System.out.print("b = ");
+        printI(res, 1, y);
+
+        System.out.println("x" + "\t\t\t\t" + "y");
+        for (int i = 0; i < res.size(); i++) {
+            System.out.format(i + "\t%03f\t\t%03f\n", res.get(i).getX().get(0),
+                    res.get(i).getX().get(1));
+        }
 //        System.out.println(form.getLevel(new BasicVector(new double[]{1, 2}), 0.01, 3000));
     }
 
