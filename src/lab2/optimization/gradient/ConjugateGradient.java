@@ -26,11 +26,11 @@ public class ConjugateGradient extends BasicGradient {
 
 
         Vector pk = ps.get(ps.size() - 1);
-        double ak = gradientSquareK / mul(form.getA(), pk);
-        Vector x1 = x.add(pk.multiply(ak));
+//        double ak = gradientSquareK / mul(form.getA(), pk);
+//        Vector x1 = x.add(pk.multiply(ak));
 
-//        Vector to = getNextPoint(form, x, pk);
-//        Vector x1 = Gradient.getMinOnSlice(form, x, to, epsilon);
+        Vector to = getNextPoint(form, x, pk);
+        Vector x1 = Gradient.getMinOnSlice(form, x, to, epsilon);
 
         Vector x1Gradient= form.getGradient(x1);
         double gradientSquareK1 = Math.pow(x1Gradient.euclideanNorm(), 2);
