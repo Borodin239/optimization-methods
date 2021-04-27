@@ -3,12 +3,15 @@ package lab2.graphics;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import lab2.optimization.Iteration;
 import lab2.optimization.QuadraticForm;
 import lab2.optimization.gradient.BasicGradient;
 import lab2.optimization.gradient.ConjugateGradient;
 import lab2.optimization.gradient.FastestGradient;
 import lab2.optimization.gradient.Gradient;
+import org.gillius.jfxutils.chart.ChartPanManager;
+import org.gillius.jfxutils.chart.JFXChartUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +52,10 @@ public class GraphicsController {
 
     private List<Iteration> iterations;
     private GraphicChart chart;
+    QuadraticForm form1 = new QuadraticForm(new double[][]{
+            {2, 0},
+            {0, 2},
+    }, new double[] {0, 0});
     QuadraticForm form = new QuadraticForm(new double[][]{
             {2, 0},
             {0, 8},
@@ -67,6 +74,22 @@ public class GraphicsController {
                 updateBorderLabel(iteration.getX().get(0), iteration.getX().get(1));
                 chart.update(newIterationIndex);
             }
+        });
+        ChartPanManager panner = new ChartPanManager(lineChart);
+        //while pressing the left mouse button, you can drag to navigate
+        panner.setMouseFilter(mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY) {//set your custom combination to trigger navigation
+                // let it through
+            } else {
+                mouseEvent.consume();
+            }
+        });
+        panner.start();
+
+        //holding the right mouse button will draw a rectangle to zoom to desired location
+        JFXChartUtil.setupZooming(lineChart, mouseEvent -> {
+            if (mouseEvent.getButton() != MouseButton.SECONDARY)//set your custom combination to trigger rectangle zooming
+                mouseEvent.consume();
         });
         fillOptimizationMap();
         choiceBox.getItems().addAll(optimizationMap.keySet());

@@ -108,7 +108,10 @@ public class GraphicChart {
     }
 
     private void drawLevels() {
-        for (int i = 0; i < iterations.size() && i < 8; i++) {
+        for (int i = 0; i < iterations.size(); i++) {
+            if (form.getGradient(iterations.get(i).getX()).norm() < 1) {
+                return;
+            }
             List<Vector> temp = form.getLevel(iterations.get(i).getX(), 0.01, 40000);
             for (Vector v : temp) {
                 series.get(i + 1).getData().add(new XYChart.Data<>(v.get(0), v.get(1)));

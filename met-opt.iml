@@ -24,10 +24,19 @@
         <jarDirectory url="jar://$MODULE_DIR$/javafx-0.2.jar!/" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/artifacts/la4j-0.6.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/artifacts/jfxutils-1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
