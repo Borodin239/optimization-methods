@@ -116,7 +116,7 @@ public class QuadraticForm {
         return Math.abs(a - b) < 1e-10;
     }
 
-    private static void check(double[][] a, double[] b, double c) {
+    protected void check(double[][] a, double[] b, double c) {
         if (a == null || b == null) {
             throw new IllegalArgumentException();
         }
