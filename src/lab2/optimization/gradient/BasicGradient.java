@@ -38,6 +38,7 @@ public class BasicGradient implements Gradient {
         Vector y;
         while (form.apply(x) <= form.apply(y = getNextPoint(form, x)) && alpha > epsilon) {
             alpha /= 2;
+            System.out.println(alpha);
         }
         return y;
     }

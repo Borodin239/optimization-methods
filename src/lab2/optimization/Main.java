@@ -20,13 +20,13 @@ public class Main {
 
 // 4564564
     public static void main(String[] args) {
-//        QuadraticForm form = new QuadraticForm(new double[][]{
-//                {1, 0},
-//                {0, 4},
-//        }, new double[] {4, 2});
-        QuadraticForm form = new LinearQuadraticForm(new double[]{1, 13});
-        double x = 13, y = 123;
-        Gradient opt = new FastestGradient();
+        QuadraticForm form = new QuadraticForm(new double[][]{
+                {2, 0},
+                {0, 2}
+        }, new double[] {10, 20}, 140);
+//        QuadraticForm form = new QuadraticForm(new double[][]{{2, 0}, {0, 500}});
+        double x = 2, y = 15;
+        Gradient opt = new BasicGradient();
         List<Iteration> res = opt.getOptimization(form, 0.001, x, y);
 
         for (int i = 0; i < res.size(); i++) {
