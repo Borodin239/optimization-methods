@@ -144,9 +144,6 @@ public class ProfileMatrix implements Matrix {
     public Matrix[] getLU() {
         for (int i = 1; i < size(); i++) {
             for (int j = firstInProfileL(i); j < i; j++) {
-                if (i == 3 && j == 2) {
-                    System.out.println("here");
-                }
                 double tmp = get(i, j);
                 for (int k = 0; k < j; k++) {
                     tmp -= get(i, k) * get(k, j);
@@ -213,6 +210,11 @@ public class ProfileMatrix implements Matrix {
         Matrix L = LU[0];
         Matrix U = LU[1];
 
+        for (int i = 0; i < size(); i++) {
+            if (U.get(i, i) == 0) {
+                return null;
+            }
+        }
         double[] y = new double[size()];
 
         for (int i = 0; i < size(); i++) {
