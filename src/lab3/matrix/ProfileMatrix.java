@@ -211,7 +211,7 @@ public class ProfileMatrix implements Matrix {
         Matrix U = LU[1];
 
         for (int i = 0; i < size(); i++) {
-            if (U.get(i, i) == 0) {
+            if (Math.abs(U.get(i, i)) < 1e-14) {
                 return null;
             }
         }
