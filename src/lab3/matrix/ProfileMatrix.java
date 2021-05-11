@@ -70,30 +70,26 @@ public class ProfileMatrix implements Matrix {
         }
     }
 
-    private void buildIal(double[][] m, int size) {
-        ial = new int[size + 1];
-        ial[0] = 0;
-        ial[1] = 0;
+    private int[] abstractBuild(double[][] m, int size, boolean isBuildIal) {
+        int[] res = new int[size + 1];
+        res[0] = 0;
+        res[1] = 0;
         for (int i = 1; i < size; i++) {
             int start = 0;
-            while (start < i && m[i][start] == 0) {
+            while (start < i && (isBuildIal && m[i][start] == 0 || !isBuildIal && m[start][i] == 0)) {
                 start++;
             }
-            ial[i + 1] = ial[i] + (i - start);
+            res[i + 1] = res[i] + (i - start);
         }
+        return res;
+    }
+
+    private void buildIal(double[][] m, int size) {
+        ial = abstractBuild(m, size, true);
     }
 
     private void buildIau(double[][] m, int size) {
-        iau = new int[size + 1];
-        iau[0] = 0;
-        iau[1] = 0;
-        for (int i = 1; i < size; i++) {
-            int start = 0;
-            while (start < i && m[start][i] == 0) {
-                start++;
-            }
-            iau[i + 1] = iau[i] + (i - start);
-        }
+        iau = abstractBuild(m, size, false);
     }
 
     public double get(int i, int j) {
