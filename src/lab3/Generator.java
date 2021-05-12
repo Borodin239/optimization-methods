@@ -42,6 +42,17 @@ public class Generator {
         return matrix;
     }
 
+    private double[] multiplyMatrixOnX(double[][] matrix) {
+        int n = matrix.length;
+        double[] f = new double[n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                f[i] += (j + 1) * matrix[i][j];
+            }
+        }
+        return f;
+    }
+
     void generateAll(boolean isSecond) {
 
         // Перебор различных размерностей
@@ -54,6 +65,7 @@ public class Generator {
                 } else {
                     matrix = generateThirdMatrix(n, k);
                 }
+                double[] f = multiplyMatrixOnX(matrix);
                 String directory = isSecond ? "/secondTask" : "/HilbertMatrices";
                 Path path = Paths.get("src/lab3/matrices" + directory + "/k" + k + "_n" + n + ".txt");
                 try {
@@ -67,6 +79,9 @@ public class Generator {
                             writer.write(matrix[i][j] + " ");
                         }
                         writer.write("\n");
+                    }
+                    for (int i = 0; i < n; i++) {
+                        writer.write(f[i] + " ");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
