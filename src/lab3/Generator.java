@@ -11,9 +11,14 @@ public class Generator {
         return (int) (Math.random() * 5) * -1;
     }
 
-    private double[][] generateThirdMatrix(int n, int k) {
+    private double[][] generateThirdMatrix(int n) {
         double[][] matrix = new double[n][n];
-
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                double zn = i + j + 1;
+                matrix[i][j] = 1 / zn;
+            }
+        }
         return matrix;
     }
 
@@ -53,39 +58,44 @@ public class Generator {
         return f;
     }
 
-    void generateAll(boolean isSecond) {
+    private void printMatrix(double[][] matrix, boolean isSecond, int n, int k) {
+        double[] f = multiplyMatrixOnX(matrix);
+        String sPath = isSecond ? "src/lab3/matrices" + "/secondTask" + "/k" + k + "/n" + n + ".txt" :
+                                   "src/lab3/matrices" + "/thirdTask" + "/n" + n + ".txt";
+        Path path = Paths.get(sPath);
+        try {
+            Files.createFile(path);
+        } catch (IOException ignored) {
+            // do nothing
+        }
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    writer.write(matrix[i][j] + " ");
+                }
+                writer.write("\n");
+            }
+            writer.write("\n");
+            for (int i = 0; i < n; i++) {
+                writer.write(f[i] + " ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    void generateAll(boolean isSecond) {
         // Перебор различных размерностей
         for (int n = 15; n < 1000; n += 50) {
             // Перебор точности числа double
-            for (int k = 0; k < 7; k++) {
-                double[][] matrix;
-                if (isSecond) {
-                    matrix = generateSecondMatrix(n, k);
-                } else {
-                    matrix = generateThirdMatrix(n, k);
+            if (isSecond) {
+                for (int k = 0; k < 7; k++) {
+                    double[][] matrix = generateSecondMatrix(n, k);
+                    printMatrix(matrix, true, n, k);
                 }
-                double[] f = multiplyMatrixOnX(matrix);
-                String directory = isSecond ? "/secondTask" : "/HilbertMatrices";
-                Path path = Paths.get("src/lab3/matrices" + directory + "/k" + k + "_n" + n + ".txt");
-                try {
-                    Files.createFile(path);
-                } catch (IOException ignored) {
-                    // do nothing
-                }
-                try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-                    for (int i = 0; i < n; i++) {
-                        for (int j = 0; j < n; j++) {
-                            writer.write(matrix[i][j] + " ");
-                        }
-                        writer.write("\n");
-                    }
-                    for (int i = 0; i < n; i++) {
-                        writer.write(f[i] + " ");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            } else {
+                double[][] matrix = generateThirdMatrix(n);
+                printMatrix(matrix, false, n, -1);
             }
         }
     }
