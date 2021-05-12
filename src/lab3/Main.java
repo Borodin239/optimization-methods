@@ -14,6 +14,6 @@ public class Main {
             System.out.print(num + " ");
         }
         Generator generator = new Generator();
-        generator.generateAll();
+        generator.generateAll(true);
     }
 }
