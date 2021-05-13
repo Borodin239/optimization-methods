@@ -1,19 +1,42 @@
 package lab3;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        double[][] m = new double[][]{
-                {1, 1, 1, 0},
-                {1, 2, 3, 4},
-                {0, 2, 1, 2},
-                {0, 2, 2, 2}
-        };
-        ProfileMatrix profileMatrix = new ProfileMatrix(m);
-        double[] b = profileMatrix.solveByLU(new double[]{1, 2, 3, 4});
-        for (double num : b) {
-            System.out.print(num + " ");
+        if (args == null || args.length != 2) {
+            System.err.println("Format: program input.file output.file");
+            System.exit(1);
         }
-        Generator generator = new Generator();
-        generator.generateAll(true);
+        try (Scanner sc = new Scanner(Files.newBufferedReader(Paths.get(args[0])))) {
+            try (BufferedWriter out = Files.newBufferedWriter(Paths.get(args[1]))) {
+                int n = sc.nextInt();
+                double[][] doubles = new double[n][n];
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        doubles[i][j] = sc.nextDouble();
+                    }
+                }
+
+                double[] b = new double[n];
+                for (int i = 0; i < n; i++) {
+                    b[i] = sc.nextDouble();
+                }
+
+                ProfileMatrix matrix = new ProfileMatrix(doubles);
+                double[] res = matrix.solveByLU(b);
+
+                for (int i = 0; i < n; i++) {
+                    out.write(res[i] + " ");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+        }
     }
 }

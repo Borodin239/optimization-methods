@@ -64,11 +64,14 @@ public class Generator {
                                    "src/lab3/matrices" + "/thirdTask" + "/n" + n + ".txt";
         Path path = Paths.get(sPath);
         try {
+            Files.createDirectories(path.getParent());
             Files.createFile(path);
-        } catch (IOException ignored) {
-            // do nothing
+        } catch (IOException e) {
+           System.err.println(e);
         }
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            writer.write(String.valueOf(n));
+            writer.newLine();
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     writer.write(matrix[i][j] + " ");
@@ -98,5 +101,11 @@ public class Generator {
                 printMatrix(matrix, false, n, -1);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        Generator generator = new Generator();
+        generator.generateAll(true);
+        generator.generateAll(false);
     }
 }
