@@ -1,5 +1,17 @@
 package lab3;
 
+import org.la4j.Vector;
+import org.la4j.vector.dense.BasicVector;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Scanner;
+import java.util.function.UnaryOperator;
+import java.util.stream.IntStream;
+
 public class ProfileMatrix implements Matrix {
     //Main diagonal of the matrix
     private double[] di;
@@ -223,7 +235,7 @@ public class ProfileMatrix implements Matrix {
         Matrix U = LU[1];
 
         for (int i = 0; i < size(); i++) {
-            if (Math.abs(U.get(i, i)) < 1e-14) {
+            if (U.get(i, i) == 0) {
                 return null;
             }
         }
@@ -245,5 +257,45 @@ public class ProfileMatrix implements Matrix {
             x[i] /= U.get(i, i);
         }
         return x;
+    }
+
+    public static void main(String[] args) {
+        for (int k = 0; k <= 15; k += 1) {
+            Path second = Paths.get("src/lab3/matrices/secondTask/k" + k + "/n215.txt");
+            Path third = Paths.get("src/lab3/matrices/thirdTask/n" + k + ".txt");
+            try (Scanner sc = new Scanner(Files.newBufferedReader(second))) {
+                int n = sc.nextInt();
+                double[][] doubles = new double[n][n];
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        doubles[i][j] = sc.nextDouble();
+                    }
+                }
+
+                double[] b = new double[n];
+                for (int i = 0; i < n; i++) {
+                    b[i] = sc.nextDouble();
+                }
+
+                Vector x = new BasicVector(IntStream
+                        .range(1, n + 1)
+                        .mapToDouble(i -> i).toArray());
+
+                ProfileMatrix matrix = new ProfileMatrix(doubles);
+                Vector resGauss = new BasicVector(new GaussSolver().solve(matrix, b));
+                Vector resLU = new BasicVector(matrix.solveByLU(b));
+                for (int i = 0; i < n; i++) {
+                    resGauss.set(i, Math.abs(resGauss.get(i) - (i + 1)));
+                }
+                for (int i = 0; i < n; i++) {
+                    resLU.set(i, Math.abs(resLU.get(i) - (i + 1)));
+                }
+                System.out.println(resGauss.norm() / x.norm());
+                System.out.println(resLU.norm() / x.norm());
+                System.out.println();
+            } catch(IOException e) {
+                System.err.println(e);
+            }
+        }
     }
 }

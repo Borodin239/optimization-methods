@@ -16,7 +16,7 @@ public class GaussSolver {
     public double[] solve(double[][] arr, double[] b, int size) {
         for (int k = 0; k < size; k++) {
             findLineWithMainElement(arr, size, k, b);
-            if (Math.abs(arr[k][k]) < 1e-14) {
+            if (Math.abs(arr[k][k]) == 0) {
                 return null;
             }
             for (int i = k + 1; i < size; i++) {

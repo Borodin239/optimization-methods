@@ -89,10 +89,10 @@ public class Generator {
 
     void generateAll(boolean isSecond) {
         // Перебор различных размерностей
-        for (int n = 15; n < 1000; n += 50) {
+        for (int n = 15; n < 800; n += 50) {
             // Перебор точности числа double
             if (isSecond) {
-                for (int k = 0; k < 7; k++) {
+                for (int k = 0; k <= 15; k ++) {
                     double[][] matrix = generateSecondMatrix(n, k);
                     printMatrix(matrix, true, n, k);
                 }
