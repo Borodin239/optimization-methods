@@ -38,7 +38,6 @@ public class Generator {
         }
         final double[] di = new double[n];
         ProfileMatrix matrix = new ProfileMatrix(di, al, au, ia);
-        // TODO:: вот тут приколы
         for (int i = 0; i < n; i++) {
             double sum = 0;
             for (int j = 0; j < n; j++) {
