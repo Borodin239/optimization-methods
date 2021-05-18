@@ -3,22 +3,28 @@ package lab3;
 import org.la4j.Vector;
 import org.la4j.vector.dense.BasicVector;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
-import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
 public class ProfileMatrix implements Matrix {
     //Main diagonal of the matrix
-    private double[] di;
-    private double[] al, au;
-    private int[] ial, iau;
+    double[] di;
+    double[] al, au;
+    int[] ial, iau;
 
-    // OK
+    /**
+     * Creates empty matrix.
+     */
+    public ProfileMatrix() {}
+
+    /**
+     * Generates profile matrix from full matrix.
+     * @param m full matrix
+     */
     public ProfileMatrix(double[][] m) {
         checkSize(m);
         int size = m.length;
@@ -28,6 +34,68 @@ public class ProfileMatrix implements Matrix {
         buildAl(m, size);
         buildIau(m, size);
         buildAu(m, size);
+    }
+
+    /**
+     * Creates profile matrix with information from these arrays.
+     * @param di is diagonal elements of the matrix.
+     * @param al is the elements of the lower triangle
+     * @param au is the elements of the upper triangle.
+     * @param ia is the matrix profile.
+     */
+    public ProfileMatrix(double[] di, double[] al, double[] au, int[] ia) {
+        this.di = di;
+        this.al = al;
+        this.au = au;
+        this.ial = ia;
+        this.iau = ia;
+    }
+
+    /**
+     * Reads matrix from files for third task.
+     * @param n matrix size.
+     */
+    public void readFromFile(int n) {
+        // TODO:: not yet implemented
+    }
+
+    /**
+     * Reads matrix from files for second task.
+     * @param n matrix size.
+     * @param k power of constant.
+     */
+    public void readFromFile(int n, int k) {
+        String path = "src/lab3/matrices/secondTask/n_" + n + "/k_" + k + "/";
+        di = readDoubleArrayFromFile(n, path + "di.txt");
+        ial = readIntArrayFromFile(n + 1, path + "ia.txt");
+        iau = ial;
+        au = readDoubleArrayFromFile(ial[n], path + "au.txt");
+        al = readDoubleArrayFromFile(ial[n], path + "al.txt");
+    }
+
+    private double[] readDoubleArrayFromFile(int size, String path) {
+        double[] res = new double[size];
+        try (Scanner in = new Scanner(Files.newBufferedReader(Paths.get(path)))){
+            for (int i = 0; i < size; i++) {
+                String number = in.next();
+                res[i] = Double.parseDouble(number);
+            }
+        } catch (IOException exception) {
+            System.err.println(exception.getMessage());
+        }
+        return res;
+    }
+
+    private int[] readIntArrayFromFile(int size, String path) {
+        int[] res = new int[size];
+        try (Scanner in = new Scanner(Files.newBufferedReader(Paths.get(path)))){
+            for (int i = 0; i < size; i++) {
+                res[i] = in.nextInt();
+            }
+        } catch (IOException exception) {
+            System.err.println(exception.getMessage());
+        }
+        return res;
     }
 
     // TODO::UNUSED
@@ -51,7 +119,6 @@ public class ProfileMatrix implements Matrix {
         return i - (iau[i + 1] - iau[i]);
     }
 
-    // OK
     private void checkSize(double[][] m) {
         for (double[] arr : m) {
             if (m.length != arr.length) {
@@ -115,7 +182,12 @@ public class ProfileMatrix implements Matrix {
         iau = abstractBuild(m, size, false);
     }
 
-    // OK
+    /**
+     * Return element by row and column indexes.
+     * @param i row index.
+     * @param j column index.
+     * @return element with specified indexes.
+     */
     public double get(int i, int j) {
         if (i == j) {
             return di[i];
@@ -136,7 +208,12 @@ public class ProfileMatrix implements Matrix {
         }
     }
 
-    // OK
+    /**
+     * Changes the value of the selected element to the passed one.
+     * @param i row index.
+     * @param j column index.
+     * @param val the value that we want to set for the matrix element.
+     */
     public void set(int i, int j, double val) {
         if (i == j) {
             di[i] = val;
@@ -157,7 +234,10 @@ public class ProfileMatrix implements Matrix {
         }
     }
 
-    // OK
+    /**
+     * Returns size of the matrix.
+     * @return matrix size.
+     */
     @Override
     public int size() {
         return di.length;
