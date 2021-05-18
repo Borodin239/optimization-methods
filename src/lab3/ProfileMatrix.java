@@ -1,5 +1,6 @@
 package lab3;
 
+
 import org.la4j.Vector;
 import org.la4j.vector.dense.BasicVector;
 
@@ -8,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
@@ -221,7 +224,6 @@ public class ProfileMatrix implements Matrix {
                 throw new IllegalArgumentException();
             }
         };
-
         return new Matrix[] {L, U};
     }
 
@@ -247,7 +249,6 @@ public class ProfileMatrix implements Matrix {
                 y[i] -= L.get(i, j) * y[j];
             }
         }
-
         double[] x = new double[size()];
         for (int i = size() - 1; i > -1; i--) {
             x[i] = y[i];
@@ -260,8 +261,8 @@ public class ProfileMatrix implements Matrix {
     }
 
     public static void main(String[] args) {
-        for (int k = 0; k <= 15; k += 1) {
-            Path second = Paths.get("src/lab3/matrices/secondTask/k" + k + "/n215.txt");
+        for (int k = 1; k <= 15; k += 1) {
+            Path second = Paths.get("src/lab3/matrices/secondTask/k" + k + "/n515.txt");
             Path third = Paths.get("src/lab3/matrices/thirdTask/n" + k + ".txt");
             try (Scanner sc = new Scanner(Files.newBufferedReader(second))) {
                 int n = sc.nextInt();
@@ -281,9 +282,16 @@ public class ProfileMatrix implements Matrix {
                         .range(1, n + 1)
                         .mapToDouble(i -> i).toArray());
 
+
                 ProfileMatrix matrix = new ProfileMatrix(doubles);
+                Instant before = Instant.now();
                 Vector resGauss = new BasicVector(new GaussSolver().solve(matrix, b));
+                Instant afterGauss = Instant.now();
                 Vector resLU = new BasicVector(matrix.solveByLU(b));
+                Instant afterLU = Instant.now();
+
+                System.out.println(k + "\t\t" + ChronoUnit.MILLIS.between(before,afterGauss) + "\t\t" +
+                        ChronoUnit.MILLIS.between(afterGauss,afterLU));
                 for (int i = 0; i < n; i++) {
                     resGauss.set(i, Math.abs(resGauss.get(i) - (i + 1)));
                 }
@@ -291,8 +299,9 @@ public class ProfileMatrix implements Matrix {
                     resLU.set(i, Math.abs(resLU.get(i) - (i + 1)));
                 }
                 System.out.println(resGauss.norm() / x.norm());
+//                System.out.format(k + "\t\t%.2f\t\t", resGauss.norm() / x.norm());
                 System.out.println(resLU.norm() / x.norm());
-                System.out.println();
+//                System.out.format("%.2f\n", resLU.norm() / x.norm());
             } catch(IOException e) {
                 System.err.println(e);
             }
