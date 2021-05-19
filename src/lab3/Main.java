@@ -2,12 +2,19 @@ package lab3;
 
 public class Main {
     public static void main(String[] args) {
-        ProfileMatrix matrix = new ProfileMatrix(15);
+        /*ProfileMatrix matrix = new ProfileMatrix(15);
         double[] f = matrix.readDoubleArrayFromFile(15, "src/lab3/matrices/thirdTask/n_15/f.txt");
         double[] x = matrix.solveByLU(f);
 
         for (double res : x) {
             System.out.print(res + " ");
+        }*/
+        CRSMatrix crsMatrix = new CRSMatrix(15);
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                System.out.print(crsMatrix.get(i, j) + " ");
+            }
+            System.out.println();
         }
         /*if (args == null || args.length != 2) {
             System.err.println("Format: program input.file output.file");

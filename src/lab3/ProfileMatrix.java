@@ -4,7 +4,6 @@ package lab3;
 import org.la4j.Vector;
 import org.la4j.vector.dense.BasicVector;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,29 +11,36 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
-import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
-public class ProfileMatrix implements Matrix {
-    //Main diagonal of the matrix
-    double[] di;
-    double[] al, au;
+public class ProfileMatrix extends AbstractMatrix {
+    /**
+     * Elements of the lower and upper triangular matrices.
+     */
     int[] ial, iau;
 
 
-    /** TODO:: переписать
-     * Creates matrix.
+    /**
+     * Creates matrix by reading all the necessary information
+     * for 2 tasks from the files. It is enough to pass the
+     * matrix dimension n and the power k.
      */
     public ProfileMatrix(int n, int k) {
         readFromFile(n, k);
     }
 
+    /**
+     * Creates matrix by reading all the necessary information
+     * for third tasks from the files. It is enough to pass the
+     * matrix dimension n.
+     */
     public ProfileMatrix(int n) {
         readFromFile(n);
     }
 
     /**
      * Generates profile matrix from full matrix.
+     *
      * @param m full matrix
      */
     public ProfileMatrix(double[][] m) {
@@ -50,6 +56,7 @@ public class ProfileMatrix implements Matrix {
 
     /**
      * Creates profile matrix with information from these arrays.
+     *
      * @param di is diagonal elements of the matrix.
      * @param al is the elements of the lower triangle
      * @param au is the elements of the upper triangle.
@@ -65,19 +72,25 @@ public class ProfileMatrix implements Matrix {
 
     /**
      * Reads matrix from files for third task.
+     *
      * @param n matrix size.
      */
     public void readFromFile(int n) {
-        readFromFile(n, "src/lab3/matrices/thirdTask/n_" + n + "/");
+        readFromFile(
+                n, "src/lab3/matrices/thirdTask/n_" + n + "/"
+        );
     }
 
     /**
      * Reads matrix from files for second task.
+     *
      * @param n matrix size.
      * @param k power of constant.
      */
     public void readFromFile(int n, int k) {
-        readFromFile(n, "src/lab3/matrices/secondTask/n_" + n + "/k_" + k + "/");
+        readFromFile(
+                n, "src/lab3/matrices/secondTask/n_" + n + "/k_" + k + "/"
+        );
     }
 
     private void readFromFile(int n, String path) {
@@ -88,32 +101,13 @@ public class ProfileMatrix implements Matrix {
         al = readDoubleArrayFromFile(ial[n], path + "al.txt");
     }
 
-    public double[] readDoubleArrayFromFile(int size, String path) {
-        double[] res = new double[size];
-        try (Scanner in = new Scanner(Files.newBufferedReader(Paths.get(path)))){
-            for (int i = 0; i < size; i++) {
-                String number = in.next();
-                res[i] = Double.parseDouble(number);
-            }
-        } catch (IOException exception) {
-            System.err.println(exception.getMessage());
-        }
-        return res;
-    }
-
-    public int[] readIntArrayFromFile(int size, String path) {
-        int[] res = new int[size];
-        try (Scanner in = new Scanner(Files.newBufferedReader(Paths.get(path)))){
-            for (int i = 0; i < size; i++) {
-                res[i] = in.nextInt();
-            }
-        } catch (IOException exception) {
-            System.err.println(exception.getMessage());
-        }
-        return res;
-    }
-
-    // TODO::UNUSED
+    /**
+     * Returns is the selected element in matrix or not.
+     *
+     * @param i number of the row.
+     * @param j number of the column.
+     * @return is element in {@code al} or {@code au} arrays.
+     */
     public boolean isInProfile(int i, int j) {
         if (i == j) {
             return true;
@@ -142,7 +136,6 @@ public class ProfileMatrix implements Matrix {
         }
     }
 
-    // TODO:: если не лень вынести копипасту
     private void buildAl(double[][] m, int size) {
         al = new double[ial[size]];
         for (int i = 0; i < size; i++) {
@@ -153,7 +146,6 @@ public class ProfileMatrix implements Matrix {
         }
     }
 
-    // OK
     private void buildAu(double[][] m, int size) {
         au = new double[iau[size]];
         for (int i = 0; i < size; i++) {
@@ -164,7 +156,6 @@ public class ProfileMatrix implements Matrix {
         }
     }
 
-    // OK
     private void buildDi(double[][] m, int size) {
         di = new double[size];
         for (int i = 0; i < size; i++) {
@@ -172,7 +163,6 @@ public class ProfileMatrix implements Matrix {
         }
     }
 
-    // OK
     private int[] abstractBuild(double[][] m, int size, boolean isBuildIal) {
         int[] res = new int[size + 1];
         res[0] = 0;
@@ -187,22 +177,15 @@ public class ProfileMatrix implements Matrix {
         return res;
     }
 
-    // OK
     private void buildIal(double[][] m, int size) {
         ial = abstractBuild(m, size, true);
     }
 
-    // OK
     private void buildIau(double[][] m, int size) {
         iau = abstractBuild(m, size, false);
     }
 
-    /**
-     * Return element by row and column indexes.
-     * @param i row index.
-     * @param j column index.
-     * @return element with specified indexes.
-     */
+    @Override
     public double get(int i, int j) {
         if (i == j) {
             return di[i];
@@ -213,22 +196,16 @@ public class ProfileMatrix implements Matrix {
             } else {
                 return al[ial[i] + j - start];
             }
+        }
+        int start = j - (iau[j + 1] - iau[j]);
+        if (i < start) {
+            return 0;
         } else {
-            int start = j - (iau[j + 1] - iau[j]);
-            if (i < start) {
-                return 0;
-            } else {
-                return au[iau[j] + i - start];
-            }
+            return au[iau[j] + i - start];
         }
     }
 
-    /**
-     * Changes the value of the selected element to the passed one.
-     * @param i row index.
-     * @param j column index.
-     * @param val the value that we want to set for the matrix element.
-     */
+    @Override
     public void set(int i, int j, double val) {
         if (i == j) {
             di[i] = val;
@@ -249,10 +226,6 @@ public class ProfileMatrix implements Matrix {
         }
     }
 
-    /**
-     * Returns size of the matrix.
-     * @return matrix size.
-     */
     @Override
     public int size() {
         return di.length;
@@ -291,10 +264,12 @@ public class ProfileMatrix implements Matrix {
                 if (i == j) return 1;
                 return ProfileMatrix.this.get(i, j);
             }
+
             @Override
             public int size() {
                 return ProfileMatrix.this.size();
             }
+
             @Override
             public void set(int i, int j, double val) {
                 throw new IllegalArgumentException();
@@ -307,17 +282,19 @@ public class ProfileMatrix implements Matrix {
                 if (i > j) return 0;
                 return ProfileMatrix.this.get(i, j);
             }
+
             @Override
             public int size() {
                 return ProfileMatrix.this.size();
             }
+
             @Override
             public void set(int i, int j, double val) {
                 throw new IllegalArgumentException();
             }
         };
 
-        return new Matrix[] {L, U};
+        return new Matrix[]{L, U};
     }
 
     private static void print(Matrix m) {
@@ -331,7 +308,13 @@ public class ProfileMatrix implements Matrix {
         System.out.println();
     }
 
-    // Решает при помощи разложения на LU
+    /**
+     * Solves a system of linear equations using
+     * LU decomposition.
+     * @param b the vector obtained by multiplying
+     *         the matrix by the vector x.
+     * @return resulting vector x.
+     */
     double[] solveByLU(double[] b) {
         if (b.length != size()) {
             throw new IllegalArgumentException("Wrong b argument size");
@@ -339,8 +322,6 @@ public class ProfileMatrix implements Matrix {
         Matrix[] LU = getLU();
         Matrix L = LU[0];
         Matrix U = LU[1];
-//        print(L);
-//        print(U);
 
         for (int i = 0; i < size(); i++) {
             if (U.get(i, i) == 0) {
@@ -397,8 +378,8 @@ public class ProfileMatrix implements Matrix {
                 Vector resLU = new BasicVector(matrix.solveByLU(b));
                 Instant afterLU = Instant.now();
 
-                System.out.println(k + "\t\t" + ChronoUnit.MILLIS.between(before,afterGauss) + "\t\t" +
-                        ChronoUnit.MILLIS.between(afterGauss,afterLU));
+                System.out.println(k + "\t\t" + ChronoUnit.MILLIS.between(before, afterGauss) + "\t\t" +
+                        ChronoUnit.MILLIS.between(afterGauss, afterLU));
                 for (int i = 0; i < n; i++) {
                     resGauss.set(i, Math.abs(resGauss.get(i) - (i + 1)));
                 }
@@ -409,7 +390,7 @@ public class ProfileMatrix implements Matrix {
 //                System.out.format(k + "\t\t%.2f\t\t", resGauss.norm() / x.norm());
                 System.out.println(resLU.norm() / x.norm());
 //                System.out.format("%.2f\n", resLU.norm() / x.norm());
-            } catch(IOException e) {
+            } catch (IOException e) {
                 System.err.println(e);
             }
         }

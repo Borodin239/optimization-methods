@@ -2,6 +2,13 @@ package lab3;
 
 public class GaussSolver {
 
+    /**
+     * Solves a system of linear equations using the Gauss method.
+     * @param matrix our matrix.
+     * @param b the vector obtained by multiplying
+     *          the matrix by the vector x.
+     * @return resulting vector.
+     */
     public double[] solve(Matrix matrix, double[] b) {
         if (b.length != matrix.size()) {
             throw new IllegalArgumentException("Matrix size and b length don't match");
