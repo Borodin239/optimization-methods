@@ -261,8 +261,8 @@ public class ProfileMatrix implements Matrix {
     }
 
     public static void main(String[] args) {
-        for (int k = 1; k <= 15; k += 1) {
-            Path second = Paths.get("src/lab3/matrices/secondTask/k" + k + "/n515.txt");
+        for (int k = 5; k <= 15; k += 1) {
+            Path second = Paths.get("src/lab3/matrices/secondTask/k" + k + "/n15.txt");
             Path third = Paths.get("src/lab3/matrices/thirdTask/n" + k + ".txt");
             try (Scanner sc = new Scanner(Files.newBufferedReader(second))) {
                 int n = sc.nextInt();
@@ -285,7 +285,8 @@ public class ProfileMatrix implements Matrix {
 
                 ProfileMatrix matrix = new ProfileMatrix(doubles);
                 Instant before = Instant.now();
-                Vector resGauss = new BasicVector(new GaussSolver().solve(matrix, b));
+//                Vector resGauss = new BasicVector(new GaussSolver().solve(matrix, b));
+                Vector resGauss = new ConjugateGradientSolver().solve(matrix, new BasicVector(b));
                 Instant afterGauss = Instant.now();
                 Vector resLU = new BasicVector(matrix.solveByLU(b));
                 Instant afterLU = Instant.now();
