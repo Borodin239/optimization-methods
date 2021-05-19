@@ -2,13 +2,13 @@ package lab3;
 
 public class Main {
     public static void main(String[] args) {
-        ProfileMatrix matrix = new ProfileMatrix();
-        matrix.readFromFile(15, 1);
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
-                System.out.print(matrix.get(i, j) + " ");
-            }
-            System.out.println();
+        ProfileMatrix matrix = new ProfileMatrix(965, 10);
+        double[] f = matrix.readDoubleArrayFromFile(965, "src/lab3/matrices/secondTask/n_965/k_10/f.txt");
+        //double[] x = new GaussSolver().solve(matrix, f);
+        double[] x = matrix.solveByLU(f);
+
+        for (double res : x) {
+            System.out.print(res + " ");
         }
         /*if (args == null || args.length != 2) {
             System.err.println("Format: program input.file output.file");

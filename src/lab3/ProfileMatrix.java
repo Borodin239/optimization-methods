@@ -19,7 +19,9 @@ public class ProfileMatrix implements Matrix {
     /**
      * Creates empty matrix.
      */
-    public ProfileMatrix() {}
+    public ProfileMatrix(int n, int k) {
+        readFromFile(n, k);
+    }
 
     /**
      * Generates profile matrix from full matrix.
@@ -73,7 +75,7 @@ public class ProfileMatrix implements Matrix {
         al = readDoubleArrayFromFile(ial[n], path + "al.txt");
     }
 
-    private double[] readDoubleArrayFromFile(int size, String path) {
+    public double[] readDoubleArrayFromFile(int size, String path) {
         double[] res = new double[size];
         try (Scanner in = new Scanner(Files.newBufferedReader(Paths.get(path)))){
             for (int i = 0; i < size; i++) {
@@ -86,7 +88,7 @@ public class ProfileMatrix implements Matrix {
         return res;
     }
 
-    private int[] readIntArrayFromFile(int size, String path) {
+    public int[] readIntArrayFromFile(int size, String path) {
         int[] res = new int[size];
         try (Scanner in = new Scanner(Files.newBufferedReader(Paths.get(path)))){
             for (int i = 0; i < size; i++) {

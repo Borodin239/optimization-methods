@@ -26,8 +26,9 @@ public class Generator {
     private ProfileMatrix generateSecondMatrix(int n, int k) {
         final int[] ia = new int[n + 1];
         ia[0] = 0;
-        for (int i = 1; i < n + 1; i++) {
-            ia[i] = ia[i - 1] + (int) (Math.random() * (i + 1));
+        ia[1] = 0;
+        for (int i = 2; i < n + 1; i++) {
+            ia[i] = ia[i - 1] + (int) (Math.random() * (i));
         }
         int length = ia[ia.length - 1];
         final double[] al = new double[length];
@@ -128,10 +129,10 @@ public class Generator {
 
     void generateAll(boolean isSecond) {
         // Перебор различных размерностей
-        for (int n = 15; n < 800; n += 50) {
+        for (int n = 15; n < 1000; n += 50) {
             // Перебор точности числа double
             if (isSecond) {
-                for (int k = 0; k <= 15; k++) {
+                for (int k = 0; k <= 10; k++) {
                     ProfileMatrix matrix = generateSecondMatrix(n, k);
                     printMatrix(matrix, true, n, k);
                 }
