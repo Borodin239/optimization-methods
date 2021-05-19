@@ -1,15 +1,15 @@
 package lab3;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        if (args == null || args.length != 2) {
+        ProfileMatrix matrix = new ProfileMatrix(15);
+        double[] f = matrix.readDoubleArrayFromFile(15, "src/lab3/matrices/thirdTask/n_15/f.txt");
+        double[] x = matrix.solveByLU(f);
+
+        for (double res : x) {
+            System.out.print(res + " ");
+        }
+        /*if (args == null || args.length != 2) {
             System.err.println("Format: program input.file output.file");
             System.exit(1);
         }
@@ -37,6 +37,6 @@ public class Main {
             }
         } catch (IOException e) {
             System.err.println(e);
-        }
+        }*/
     }
 }

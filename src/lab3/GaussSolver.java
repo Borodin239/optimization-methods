@@ -13,16 +13,6 @@ public class GaussSolver {
         return solve(arr, b.clone(), size);
     }
 
-    private static void print(double[][] arr) {
-        for (double[] doubles : arr) {
-            for (int j = 0; j < arr.length; j++) {
-                System.out.format("%.2f\t", doubles[j]);
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     public double[] solve(double[][] arr, double[] b, int size) {
         for (int k = 0; k < size; k++) {
             findLineWithMainElement(arr, size, k, b);
@@ -52,7 +42,7 @@ public class GaussSolver {
     private void findLineWithMainElement(double[][] arr, int size, int k, double[] b) {
         int mainElemPos = k;
         for (int i = k; i < size; i++) {
-            if (Math.abs(arr[i][k]) > Math.abs(arr[mainElemPos][k])) {
+            if (arr[i][k] > arr[mainElemPos][k]) {
                 mainElemPos = i;
             }
         }
