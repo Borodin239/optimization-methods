@@ -20,6 +20,7 @@ public class GaussSolver {
         return solve(arr, b.clone(), size);
     }
 
+    // find solvation x of equation arr * x = b
     public double[] solve(double[][] arr, double[] b, int size) {
         for (int k = 0; k < size; k++) {
             findLineWithMainElement(arr, size, k, b);
@@ -46,6 +47,7 @@ public class GaussSolver {
         return x;
     }
 
+    // find line with max element on position k and replace this line with k-th line
     private void findLineWithMainElement(double[][] arr, int size, int k, double[] b) {
         int mainElemPos = k;
         for (int i = k; i < size; i++) {
@@ -65,6 +67,7 @@ public class GaussSolver {
         }
     }
 
+    // get array from matrix
     private double[][] getMatrixArray(Matrix matrix, int size) {
         double[][] arr = new double[size][size];
         for (int i = 0; i < size; i++) {

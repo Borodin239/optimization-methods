@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public abstract class AbstractMatrix implements Matrix{
+public abstract class AbstractMatrix implements Matrix {
     /**
      * Matrix elements on the main diagonal.
      */

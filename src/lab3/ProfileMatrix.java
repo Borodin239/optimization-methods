@@ -93,6 +93,11 @@ public class ProfileMatrix extends AbstractMatrix {
         );
     }
 
+    /**
+     * Reads matrix from file.
+     * @param n matrix size
+     * @param path path where corresponding files lays
+     */
     private void readFromFile(int n, String path) {
         di = readDoubleArrayFromFile(n, path + "di.txt");
         ial = readIntArrayFromFile(n + 1, path + "ia.txt");
@@ -120,14 +125,29 @@ public class ProfileMatrix extends AbstractMatrix {
         }
     }
 
+    /**
+     * Returns first element in profile in line.
+     * @param i line number
+     * @return position of element
+     */
     private int firstInProfileL(int i) {
         return i - (ial[i + 1] - ial[i]);
     }
 
+    /**
+     * Returns first element in profile in row.
+     * @param i row number
+     * @return position of element
+     */
     private int firstInProfileU(int i) {
         return i - (iau[i + 1] - iau[i]);
     }
 
+    /**
+     * Check if matrix square.
+     * @param m matrix
+     * @throws IllegalArgumentException if not square
+     */
     private void checkSize(double[][] m) {
         for (double[] arr : m) {
             if (m.length != arr.length) {
@@ -136,6 +156,7 @@ public class ProfileMatrix extends AbstractMatrix {
         }
     }
 
+    // build al from matrix
     private void buildAl(double[][] m, int size) {
         al = new double[ial[size]];
         for (int i = 0; i < size; i++) {
@@ -146,6 +167,7 @@ public class ProfileMatrix extends AbstractMatrix {
         }
     }
 
+    // build au from matrix
     private void buildAu(double[][] m, int size) {
         au = new double[iau[size]];
         for (int i = 0; i < size; i++) {
@@ -156,6 +178,7 @@ public class ProfileMatrix extends AbstractMatrix {
         }
     }
 
+    // build di from matrix
     private void buildDi(double[][] m, int size) {
         di = new double[size];
         for (int i = 0; i < size; i++) {
@@ -163,7 +186,8 @@ public class ProfileMatrix extends AbstractMatrix {
         }
     }
 
-    private int[] abstractBuild(double[][] m, int size, boolean isBuildIal) {
+    //build ail or aiu which specified by isBuildIal
+    private int[] abstractAiBuild(double[][] m, int size, boolean isBuildIal) {
         int[] res = new int[size + 1];
         res[0] = 0;
         res[1] = 0;
@@ -177,14 +201,17 @@ public class ProfileMatrix extends AbstractMatrix {
         return res;
     }
 
+    //build ial
     private void buildIal(double[][] m, int size) {
-        ial = abstractBuild(m, size, true);
+        ial = abstractAiBuild(m, size, true);
     }
 
+    //build iau
     private void buildIau(double[][] m, int size) {
-        iau = abstractBuild(m, size, false);
+        iau = abstractAiBuild(m, size, false);
     }
 
+    //get element (i, j)
     @Override
     public double get(int i, int j) {
         if (i == j) {
@@ -205,6 +232,7 @@ public class ProfileMatrix extends AbstractMatrix {
         }
     }
 
+    //set element (i, j)
     @Override
     public void set(int i, int j, double val) {
         if (i == j) {
@@ -226,12 +254,14 @@ public class ProfileMatrix extends AbstractMatrix {
         }
     }
 
+    // return size of matrix
     @Override
     public int size() {
         return di.length;
     }
 
-    // OK
+    // return two matrices L and U, which lays in this matrix memory.
+    // After this method you CAN'T use this matrix
     public Matrix[] getLU() {
         for (int i = 1; i < size(); i++) {
             for (int j = firstInProfileL(i); j < i; j++) {
@@ -257,6 +287,7 @@ public class ProfileMatrix extends AbstractMatrix {
             }
             set(i, i, tmp);
         }
+        // building L and R as anonymous classes
         Matrix L = new Matrix() {
             @Override
             public double get(int i, int j) {
@@ -297,6 +328,7 @@ public class ProfileMatrix extends AbstractMatrix {
         return new Matrix[]{L, U};
     }
 
+    // print matrix
     private static void print(Matrix m) {
         for (int i = 0; i < m.size(); i++) {
             System.out.format("%d\t\t", i);
@@ -348,6 +380,7 @@ public class ProfileMatrix extends AbstractMatrix {
         return x;
     }
 
+    // test main
     public static void main(String[] args) {
         for (int k = 1; k <= 15; k += 1) {
             Path second = Paths.get("src/lab3/matrices/secondTask/k" + k + "/n515.txt");
