@@ -16,11 +16,16 @@ public class ProfileMatrix implements Matrix {
     double[] al, au;
     int[] ial, iau;
 
-    /**
-     * Creates empty matrix.
+
+    /** TODO:: переписать
+     * Creates matrix.
      */
     public ProfileMatrix(int n, int k) {
         readFromFile(n, k);
+    }
+
+    public ProfileMatrix(int n) {
+        readFromFile(n);
     }
 
     /**
@@ -58,7 +63,7 @@ public class ProfileMatrix implements Matrix {
      * @param n matrix size.
      */
     public void readFromFile(int n) {
-        // TODO:: not yet implemented
+        readFromFile(n, "src/lab3/matrices/thirdTask/n_" + n + "/");
     }
 
     /**
@@ -67,7 +72,10 @@ public class ProfileMatrix implements Matrix {
      * @param k power of constant.
      */
     public void readFromFile(int n, int k) {
-        String path = "src/lab3/matrices/secondTask/n_" + n + "/k_" + k + "/";
+        readFromFile(n, "src/lab3/matrices/secondTask/n_" + n + "/k_" + k + "/");
+    }
+
+    private void readFromFile(int n, String path) {
         di = readDoubleArrayFromFile(n, path + "di.txt");
         ial = readIntArrayFromFile(n + 1, path + "ia.txt");
         iau = ial;
@@ -101,7 +109,7 @@ public class ProfileMatrix implements Matrix {
     }
 
     // TODO::UNUSED
-    private boolean isInProfile(int i, int j) {
+    public boolean isInProfile(int i, int j) {
         if (i == j) {
             return true;
         } else if (i > j) {
@@ -307,6 +315,17 @@ public class ProfileMatrix implements Matrix {
         return new Matrix[] {L, U};
     }
 
+    private static void print(Matrix m) {
+        for (int i = 0; i < m.size(); i++) {
+            System.out.format("%d\t\t", i);
+            for (int j = 0; j < m.size(); j++) {
+                System.out.format("%.3f\t\t", m.get(i, j));
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     // Решает при помощи разложения на LU
     double[] solveByLU(double[] b) {
         if (b.length != size()) {
@@ -315,6 +334,8 @@ public class ProfileMatrix implements Matrix {
         Matrix[] LU = getLU();
         Matrix L = LU[0];
         Matrix U = LU[1];
+//        print(L);
+//        print(U);
 
         for (int i = 0; i < size(); i++) {
             if (U.get(i, i) == 0) {

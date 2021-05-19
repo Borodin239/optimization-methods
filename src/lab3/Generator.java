@@ -11,25 +11,35 @@ public class Generator {
         return (int) (Math.random() * 5) * -1;
     }
 
-    private ProfileMatrix generateThirdMatrix(int n) {
-        double[][] matrix = new double[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                double zn = i + j + 1;
-                matrix[i][j] = 1 / zn;
-            }
-        }
-        // TODO:: сделать норм
-        return new ProfileMatrix(new double[1], new double[1], new double[1], new int[1]);
-    }
-
-    private ProfileMatrix generateSecondMatrix(int n, int k) {
+    private int[] generateIa(int n) {
         final int[] ia = new int[n + 1];
         ia[0] = 0;
         ia[1] = 0;
         for (int i = 2; i < n + 1; i++) {
             ia[i] = ia[i - 1] + (int) (Math.random() * (i));
         }
+        return ia;
+    }
+
+    private ProfileMatrix generateThirdMatrix(int n) {
+        final int[] ia = generateIa(n);
+        int length = ia[ia.length - 1];
+        final double[] al = new double[length];
+        final double[] au = new double[length];
+        final double[] di = new double[n];
+        ProfileMatrix matrix = new ProfileMatrix(di, al, au, ia);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix.isInProfile(i, j)) {
+                    matrix.set(i, j, 1 / (double) (i + j + 1));
+                }
+            }
+        }
+        return matrix;
+    }
+
+    private ProfileMatrix generateSecondMatrix(int n, int k) {
+        final int[] ia = generateIa(n);
         int length = ia[ia.length - 1];
         final double[] al = new double[length];
         final double[] au = new double[length];
@@ -70,7 +80,7 @@ public class Generator {
     }
 
     private double[] multiplyMatrixOnX(ProfileMatrix matrix) {
-        int n = matrix.di.length;
+        int n = matrix.size();
         double[] f = new double[n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -145,7 +155,7 @@ public class Generator {
 
     public static void main(String[] args) {
         Generator generator = new Generator();
-        generator.generateAll(true);
-        //generator.generateAll(false);
+        //generator.generateAll(true);
+        generator.generateAll(false);
     }
 }
