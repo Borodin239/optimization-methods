@@ -15,7 +15,7 @@ public interface Matrix {
         double[] res = new double[size()];
         for (int i = 0; i < size(); i++) {
             for (int j = 0; j < size(); j++) {
-                res[i] += get(i, j) * vec.get(j) / 2;
+                res[i] += get(i, j) * vec.get(j) ;
             }
         }
         return new BasicVector(res);

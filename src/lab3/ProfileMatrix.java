@@ -264,7 +264,8 @@ public class ProfileMatrix implements Matrix {
         for (int k = 5; k <= 15; k += 1) {
             Path second = Paths.get("src/lab3/matrices/secondTask/k" + k + "/n15.txt");
             Path third = Paths.get("src/lab3/matrices/thirdTask/n" + k + ".txt");
-            try (Scanner sc = new Scanner(Files.newBufferedReader(second))) {
+            Path fifth = Paths.get("n15.txt");
+            try (Scanner sc = new Scanner(Files.newBufferedReader(fifth))) {
                 int n = sc.nextInt();
                 double[][] doubles = new double[n][n];
                 for (int i = 0; i < n; i++) {
