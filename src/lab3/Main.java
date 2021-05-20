@@ -2,8 +2,8 @@ package lab3;
 
 public class Main {
     public static void main(String[] args) {
-        ProfileMatrix matrix = new ProfileMatrix(15, 3);
-        double[] f = matrix.readDoubleArrayFromFile(15, "src/lab3/matrices/secondTask/n_15/k_3/f.txt");
+        ProfileMatrix matrix = new ProfileMatrix(65);
+        double[] f = matrix.readDoubleArrayFromFile(65, "src/lab3/matrices/thirdTask/n_65/f.txt");
         double[] x = matrix.solveByLU(f);
 
         for (double res : x) {

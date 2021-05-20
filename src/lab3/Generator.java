@@ -224,8 +224,19 @@ public class Generator {
 
     void generateAll(final int number) {
         // Перебор различных размерностей
-        ProfileMatrix matrix;
-        for (int n = 15; n < 1000; n += 50) {
+        ProfileMatrix matrix = generateThirdMatrix(5);
+        printMatrix(matrix, false, 5, -1);
+        matrix = generateThirdMatrix(10);
+        printMatrix(matrix, false, 10, -1);
+        matrix = generateThirdMatrix(15);
+        printMatrix(matrix, false, 15, -1);
+        matrix = generateThirdMatrix(25);
+        printMatrix(matrix, false, 25, -1);
+        for (int i = 50; i < 1000; i+=50) {
+            matrix = generateThirdMatrix(i);
+            printMatrix(matrix, false, i, -1);
+        }
+        /*for (int n = 15; n < 1000; n += 50) {
             switch (number) {
                 case (2):
                     // Перебор точности числа double
@@ -250,12 +261,12 @@ public class Generator {
                     throw new IllegalArgumentException("Number of task should be 2, 3 or 5, but you" +
                             " print " + number);
             }
-        }
+        }*/
     }
 
     public static void main(String[] args) {
         Generator generator = new Generator();
-        generator.generateAll(2);
+        generator.generateAll(3);
         //generator.generateAll(3);
         //generator.generateAll(5);
     }
