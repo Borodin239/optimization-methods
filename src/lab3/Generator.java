@@ -25,6 +25,16 @@ public class Generator {
         return ia;
     }
 
+    private int[] generateThirdIa(int n) {
+        final int[] ia = new int[n + 1];
+        ia[0] = 0;
+        ia[1] = 0;
+        for (int i = 2; i < n + 1; i++) {
+            ia[i] = ia[i - 1] + i - 1;
+        }
+        return ia;
+    }
+
     private CRSMatrix generateFifthMatrix(int n) {
         final int[] ia = generateIa(n);
         int length = ia[ia.length - 1];
@@ -40,7 +50,7 @@ public class Generator {
         List<Integer> positions = new ArrayList<>();
         // Generate positions of non-empty elements
         for (int i = 0; i < n; i++) {
-            while(row < ia.length && ia[row] < i) {
+            while (row < ia.length && ia[row] < i) {
                 row++;
             }
             int rowSize = ia[i + 1] - ia[i];
@@ -51,7 +61,7 @@ public class Generator {
             positions.add(row);
         }
         final double[] di = new double[n];
-        CRSMatrix matrix = new CRSMatrix(di, al, au, ja,  ia);
+        CRSMatrix matrix = new CRSMatrix(di, al, au, ja, ia);
         for (int i = 0; i < n; i++) {
             double sum = 0;
             for (int j = 0; j < n; j++) {
@@ -71,7 +81,7 @@ public class Generator {
     }
 
     private ProfileMatrix generateThirdMatrix(int n) {
-        final int[] ia = generateIa(n);
+        final int[] ia = generateThirdIa(n);
         int length = ia[ia.length - 1];
         final double[] al = new double[length];
         final double[] au = new double[length];
@@ -79,9 +89,7 @@ public class Generator {
         ProfileMatrix matrix = new ProfileMatrix(di, al, au, ia);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (matrix.isInProfile(i, j)) {
-                    matrix.set(i, j, 1 / (double) (i + j + 1));
-                }
+                matrix.set(i, j, 1 / (double) (i + j + 1));
             }
         }
         return matrix;
@@ -226,18 +234,18 @@ public class Generator {
         ProfileMatrix matrix;
         for (int n = 15; n < 1000; n += 50) {
             switch (number) {
-                case(2) :
+                case (2):
                     // Перебор точности числа double
                     for (int k = 0; k <= 10; k++) {
                         matrix = generateSecondMatrix(n, k);
                         printMatrix(matrix, true, n, k);
                     }
                     break;
-                case(3) :
+                case (3):
                     matrix = generateThirdMatrix(n);
                     printMatrix(matrix, false, n, -1);
                     break;
-                case(5) :
+                case (5):
                     CRSMatrix crsMatrix = generateFifthMatrix(n);
                     printCRSMatrix(crsMatrix, n);
                     break;
@@ -251,7 +259,7 @@ public class Generator {
     public static void main(String[] args) {
         Generator generator = new Generator();
         //generator.generateAll(2);
-        //generator.generateAll(3);
-        generator.generateAll(5);
+        generator.generateAll(3);
+        //generator.generateAll(5);
     }
 }
