@@ -9,6 +9,7 @@ public class ConjugateGradientSolver {
     private Vector x;
     private Vector z;
 
+    // find solvation x of equation ax = b
     public Vector solve(Matrix a, Vector b) {
         x = new BasicVector(a.size());
         do {
@@ -20,6 +21,7 @@ public class ConjugateGradientSolver {
         return x;
     }
 
+    //scalar multiplication a on b
     private static double mulVecVec(Vector a, Vector b) {
         double res = 0;
         for (int i = 0; i < a.length(); i++) {
@@ -28,6 +30,7 @@ public class ConjugateGradientSolver {
         return res;
     }
 
+    // one iteration of solve's for
     private void doIteration(Matrix a, Vector b) {
         double alpha = mulVecVec(r, r) / mulVecVec(a.mulOnVec(z), z);
         x = x.add(z.multiply(alpha));
@@ -37,6 +40,7 @@ public class ConjugateGradientSolver {
         r = newR;
     }
 
+    // reinit values in sake of accuracy
     private void reinit(Matrix a, Vector b) {
         r = b.subtract(a.mulOnVec(x));
         z = r;
