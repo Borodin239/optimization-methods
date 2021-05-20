@@ -95,7 +95,7 @@ public class Generator {
         return matrix;
     }
 
-    private ProfileMatrix generateSecondMatrix(int n, int k) {
+    private ProfileMatrix generateSecondMatrix(int n) {
         final int[] ia = generateIa(n);
         int length = ia[ia.length - 1];
         final double[] al = new double[length];
@@ -113,13 +113,6 @@ public class Generator {
                     double element = matrix.get(i, j);
                     sum -= element;
                 }
-            }
-            if (i == 0) {
-                double res = 1;
-                for (int j = 0; j < k; j++) {
-                    res *= 0.1;
-                }
-                sum += res;
             }
             di[i] = sum;
         }
@@ -236,9 +229,13 @@ public class Generator {
             switch (number) {
                 case (2):
                     // Перебор точности числа double
+                    double add = 1;
+                    matrix = generateSecondMatrix(n);
                     for (int k = 0; k <= 10; k++) {
-                        matrix = generateSecondMatrix(n, k);
+                        matrix.di[0] += add;
                         printMatrix(matrix, true, n, k);
+                        matrix.di[0] -= add;
+                        add *= 0.1;
                     }
                     break;
                 case (3):
@@ -258,8 +255,8 @@ public class Generator {
 
     public static void main(String[] args) {
         Generator generator = new Generator();
-        //generator.generateAll(2);
-        generator.generateAll(3);
+        generator.generateAll(2);
+        //generator.generateAll(3);
         //generator.generateAll(5);
     }
 }
