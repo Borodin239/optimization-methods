@@ -347,7 +347,7 @@ public class ProfileMatrix extends AbstractMatrix {
      *         the matrix by the vector x.
      * @return resulting vector x.
      */
-    double[] solveByLU(double[] b) {
+    public double[] solveByLU(double[] b) {
         if (b.length != size()) {
             throw new IllegalArgumentException("Wrong b argument size");
         }
