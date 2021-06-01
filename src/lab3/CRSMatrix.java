@@ -17,12 +17,12 @@ public class CRSMatrix extends AbstractMatrix {
         this.ia = ia;
     }
 
-    CRSMatrix(int n) {
-        readFromFile(n);
+    CRSMatrix(int n, int num) {
+        readFromFile(n, num);
     }
 
-    private void readFromFile(int n) {
-        String path = "src/lab3/matrices/fifthTask/n_" + n + "/";
+    private void readFromFile(int n, int num) {
+        String path = "src/lab3/matrices/fifthTask" + num + "/n_" + n + "/";
         di = readDoubleArrayFromFile(n, path + "di.txt");
         ia = readIntArrayFromFile(n + 1, path + "ia.txt");
         ja = readIntArrayFromFile(ia[n], path + "ja.txt");
@@ -30,36 +30,52 @@ public class CRSMatrix extends AbstractMatrix {
         al = readDoubleArrayFromFile(ia[n], path + "al.txt");
     }
 
+    private int findIndex(int pos, int key) {
+        int l = ia[pos] - 1;
+        int r = ia[pos + 1];
+        while (l < r - 1) {
+            int m = (l + r) / 2;
+            if (ja[m] < key) {
+                l = m;
+            } else {
+                r = m;
+            }
+        }
+        if (r == ia[pos + 1] || ja[r] != key) {
+            return -1;
+        }
+        return r;
+    }
+
     @Override
     public double get(int i, int j) {
-        /*f (i == j) {
+        if (i == j) {
             return di[i];
         }
-        int rowSize = ia[i + 1] - ia[i];
-        if (i > j) {
-            int start = i - rowSize;
-            for (start) {
-
-            }
-            if (j < start) {
-                return 0;
-            }
-            return al[ia[i] + j - start];
-        }
-        int start = j - (ia[j + 1] - ia[j]);
-        if (i < start) {
+        int r = findIndex(Math.max(i, j), Math.min(i, j));
+        if (r == -1) {
             return 0;
-        }*/
-        return 0;
+        }
+        return al[r];
     }
 
     @Override
     public int size() {
-        return 0;
+        return di.length;
     }
 
     @Override
     public void set(int i, int j, double val) {
-
+        if (i == j) {
+            di[i] = val;
+        }
+        int r = findIndex(Math.max(i, j), Math.min(i, j));
+        if (r != -1) {
+            if (i > j) {
+                al[r] = val;
+            } else {
+                au[r] = val;
+            }
+        }
     }
 }

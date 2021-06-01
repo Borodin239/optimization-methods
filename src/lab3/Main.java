@@ -1,14 +1,20 @@
 package lab3;
 
+import org.la4j.Vector;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        ProfileMatrix matrix = new ProfileMatrix(65);
-        double[] f = matrix.readDoubleArrayFromFile(65, "src/lab3/matrices/thirdTask/n_65/f.txt");
+        ProfileMatrix matrix = new ProfileMatrix(50, 10);
+        double[] f = matrix.readDoubleArrayFromFile(50, "src/lab3/matrices/secondTask/n_50/k_10/f.txt");
         double[] x = matrix.solveByLU(f);
-
-        for (double res : x) {
-            System.out.print(res + " ");
+        for (double element : x) {
+            System.out.print(element + " ");
         }
+
         /*CRSMatrix crsMatrix = new CRSMatrix(15);
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {

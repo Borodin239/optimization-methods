@@ -35,30 +35,74 @@ public class Generator {
         return ia;
     }
 
-    private CRSMatrix generateFifthMatrix(int n) {
+
+    private CRSMatrix generateFifth3Matrix(int n) {
+        final int[] ia = generateThirdIa(n);
+        int length = ia[ia.length - 1];
+        final int[] ja = new int[length];
+        int str = 1;
+        int ind = 0;
+        for (int i = 0; i < ja.length; i++) {
+            ja[i] = ind;
+            ind++;
+            if (str == ind) {
+                str++;
+                ind = 0;
+            }
+        }
+        final double[] al = new double[length];
+        final double[] au = new double[length];
+        final double[] di = new double[n];
+        CRSMatrix crsMatrix = new CRSMatrix(di, al, au, ja, ia);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                crsMatrix.set(i, j, 1 / (double) (i + j + 1));
+            }
+        }
+        return crsMatrix;
+    }
+
+    private CRSMatrix generateFifth2Matrix(int n) {
+        CRSMatrix crsMatrix = new CRSMatrix(n, 1);
+        crsMatrix.di[0] -= 1;
+        crsMatrix.di[0] = -crsMatrix.di[0];
+        crsMatrix.di[0]++;
+        for (int i = 1; i < crsMatrix.di.length; i++) {
+            crsMatrix.di[i] = -crsMatrix.di[i];
+        }
+        for (int i = 0; i < crsMatrix.al.length; i++) {
+            crsMatrix.al[i] = -crsMatrix.al[i];
+            crsMatrix.au[i] = -crsMatrix.au[i];
+        }
+        return crsMatrix;
+    }
+
+    private CRSMatrix generateFifth1Matrix(int n) {
         final int[] ia = generateIa(n);
         int length = ia[ia.length - 1];
         final int[] ja = new int[length];
         final double[] al = new double[length];
         final double[] au = new double[length];
         for (int i = 0; i < length; i++) {
-            al[i] = generateElement(false);
-            au[i] = generateElement(false);
+            double element = generateElement(false);
+            al[i] = element;
+            au[i] = element;
         }
-        int row = 0;
         int ind = 0;
         List<Integer> positions = new ArrayList<>();
         // Generate positions of non-empty elements
         for (int i = 0; i < n; i++) {
-            while (row < ia.length && ia[row] < i) {
-                row++;
-            }
             int rowSize = ia[i + 1] - ia[i];
             Collections.shuffle(positions);
-            for (int j = 0; j < rowSize; j++, ind++) {
-                ja[ind] = positions.get(j);
+            List<Integer> tmp = new ArrayList<>();
+            for (int j = 0; j < rowSize; j++) {
+                tmp.add(positions.get(j));
             }
-            positions.add(row);
+            Collections.sort(tmp);
+            for (int j = 0; j < rowSize; j++, ind++) {
+                ja[ind] = tmp.get(j);
+            }
+            positions.add(i);
         }
         final double[] di = new double[n];
         CRSMatrix matrix = new CRSMatrix(di, al, au, ja, ia);
@@ -173,8 +217,8 @@ public class Generator {
         writeDoubleElements(f, fPath);
     }
 
-    private void printCRSMatrix(CRSMatrix matrix, int n) {
-        final String pathPrefix = "src/lab3/matrices/fifthTask/n_" + n + "/";
+    private void printCRSMatrix(CRSMatrix matrix, int n, int ind) {
+        final String pathPrefix = "src/lab3/matrices/fifthTask" + ind + "/n_" + n + "/";
         double[] f = multiplyMatrixOnX(matrix);
         final Path diPath = Paths.get(pathPrefix + "di.txt");
         final Path alPath = Paths.get(pathPrefix + "al.txt");
@@ -223,20 +267,39 @@ public class Generator {
     }
 
     void generateAll(final int number) {
-        // Перебор различных размерностей
-        ProfileMatrix matrix = generateThirdMatrix(5);
-        printMatrix(matrix, false, 5, -1);
-        matrix = generateThirdMatrix(10);
-        printMatrix(matrix, false, 10, -1);
-        matrix = generateThirdMatrix(15);
-        printMatrix(matrix, false, 15, -1);
-        matrix = generateThirdMatrix(25);
-        printMatrix(matrix, false, 25, -1);
-        for (int i = 50; i < 1000; i+=50) {
-            matrix = generateThirdMatrix(i);
-            printMatrix(matrix, false, i, -1);
+        ArrayList<Integer> elements = new ArrayList<>();
+        elements.add(3);
+        elements.add(5);
+        elements.add(10);
+        elements.add(15);
+        elements.add(25);
+        elements.add(50);
+        elements.add(100);
+        elements.add(200);
+        elements.add(300);
+        elements.add(400);
+        elements.add(500);
+        elements.add(600);
+        elements.add(700);
+        elements.add(800);
+        elements.add(900);
+        elements.add(1000);
+        CRSMatrix crsMatrix;
+        for (Integer element : elements) {
+            if (number == 51) {
+                crsMatrix = generateFifth1Matrix(element);
+                printCRSMatrix(crsMatrix, element, 1);
+            } else if (number == 52) {
+                crsMatrix = generateFifth2Matrix(element);
+                printCRSMatrix(crsMatrix, element, 2);
+            } else if (number == 53) {
+                crsMatrix = generateFifth3Matrix(element);
+                printCRSMatrix(crsMatrix, element, 3);
+            }
         }
-        /*for (int n = 15; n < 1000; n += 50) {
+        /*
+        for (int n = 500; n < 10000; n += 500) {
+            ProfileMatrix matrix;
             switch (number) {
                 case (2):
                     // Перебор точности числа double
@@ -253,9 +316,13 @@ public class Generator {
                     matrix = generateThirdMatrix(n);
                     printMatrix(matrix, false, n, -1);
                     break;
-                case (5):
-                    CRSMatrix crsMatrix = generateFifthMatrix(n);
-                    printCRSMatrix(crsMatrix, n);
+                case (51):
+                    crsMatrix = generateFifth1Matrix(n);
+                    printCRSMatrix(crsMatrix, n, 1);
+                    break;
+                case (52):
+                    crsMatrix = generateFifth2Matrix(n);
+                    printCRSMatrix(crsMatrix, n, 2);
                     break;
                 default:
                     throw new IllegalArgumentException("Number of task should be 2, 3 or 5, but you" +
@@ -266,8 +333,8 @@ public class Generator {
 
     public static void main(String[] args) {
         Generator generator = new Generator();
-        generator.generateAll(3);
         //generator.generateAll(3);
-        //generator.generateAll(5);
+        //generator.generateAll(3);
+        generator.generateAll(53);
     }
 }
