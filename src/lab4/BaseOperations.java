@@ -62,9 +62,9 @@ public class BaseOperations {
     public double euclideanNorm(final double[] vector) {
         double sum = 0;
         for (double num : vector) {
-            sum += num;
+            sum += num * num;
         }
-        return sum;
+        return Math.sqrt(sum);
     }
 
     public double[][] identityMatrix(final int size) {
