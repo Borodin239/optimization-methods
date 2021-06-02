@@ -18,6 +18,7 @@ public class Main {
         test(function, new NewtonWithUnidimensionalOptimization(), startPoint);
         test(function, new NewtonDescentDirectionOptimization(), startPoint);
         test(function, new DFPOptimization(), startPoint);
+        test(function, new PowellOptimization(), startPoint);
     }
 
     private static void test(final FunctionInfo function, final Optimization optimization, final double[] startPoint) {
