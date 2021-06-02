@@ -47,8 +47,13 @@ public class BaseOperations {
         return vectorSamePart(2, first, second);
     }
 
-    public double[] scalar(final double[] first, final double[] second) {
-        return vectorSamePart(3, first, second);
+    public double scalar(final double[] first, final double[] second) {
+        double[] sum = vectorSamePart(3, first, second);
+        double res = 0;
+        for (double s : sum) {
+            res += s;
+        }
+        return res;
     }
 
     public double[] multiplyVectorOnNumber(final double[] vector, final double number) {
