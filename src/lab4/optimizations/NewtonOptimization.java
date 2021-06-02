@@ -1,9 +1,10 @@
-package lab4;
+package lab4.optimizations;
 
 import lab3.ProfileMatrix;
+import lab4.BaseOperations;
 import lab4.functions.FunctionInfo;
 
-public class NewtonOptimization {
+public class NewtonOptimization implements Optimization {
     double EPSILON = 0.0000001;
     BaseOperations baseOperations = new BaseOperations();
 

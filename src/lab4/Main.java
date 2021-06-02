@@ -1,17 +1,22 @@
 package lab4;
 
+import lab4.optimizations.NewtonOptimization;
+import lab4.functions.FunctionInfo;
 import lab4.functions.ZeroFunction;
+import lab4.optimizations.Optimization;
 
 public class Main {
     public static void main(String[] args) {
-        double[] start = new double[]{4, 1};
-        NewtonOptimization newtonOptimization = new NewtonOptimization();
-        ZeroFunction zeroFunction = new ZeroFunction();
-        final double[] x = newtonOptimization.solve(start, zeroFunction);
+        test(new ZeroFunction(), new NewtonOptimization(), new double[]{4, 1});
+    }
+
+    private static void test(FunctionInfo function, Optimization optimization, double[] startPoint) {
+        final double[] x = optimization.solve(startPoint, function);
+        System.out.print("Vector x: ");
         for (double v : x) {
             System.out.print(v + " ");
         }
         System.out.println();
-        System.out.println("y = " + zeroFunction.apply(x));
+        System.out.println("y = " + function.apply(x));
     }
 }
