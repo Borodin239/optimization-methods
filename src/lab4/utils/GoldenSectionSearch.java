@@ -1,6 +1,5 @@
 package lab4.utils;
 
-import lab4.BaseOperations;
 import lab4.functions.FunctionInfo;
 
 public class GoldenSectionSearch {

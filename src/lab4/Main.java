@@ -7,6 +7,7 @@ import lab4.functions.FunctionInfo;
 import lab4.functions.ZeroFunction;
 import lab4.optimizations.NewtonWithUnidimensionalOptimization;
 import lab4.optimizations.Optimization;
+import lab4.utils.Result;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,12 +23,14 @@ public class Main {
     }
 
     private static void test(final FunctionInfo function, final Optimization optimization, final double[] startPoint) {
-        final double[] x = optimization.solve(startPoint, function, 0.0000001);
+        final Result result = optimization.solve(startPoint, function, 0.0000001);
         System.out.print("Vector x: ");
-        for (double v : x) {
+        for (double v : result.getX()) {
             System.out.print(v + " ");
         }
         System.out.println();
-        System.out.println("y = " + function.apply(x));
+        System.out.println("y = " + function.apply(result.getX()));
+        System.out.println("Iterations = " + result.getIterations());
+        System.out.println();
     }
 }
