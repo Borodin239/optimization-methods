@@ -20,7 +20,7 @@ public class NewtonWithUnidimensionalOptimization implements Optimization{
             profileMatrix = new ProfileMatrix(hessian);
             double[] d = profileMatrix.solveByLU(baseOperations.negateVector(gradient));
             // TODO:: а что с выбором границ?
-            double r = goldenSectionSearch.getOptimization(-10, 10, epsilon, function, x, d);
+            double r = goldenSectionSearch.getOptimization(-20, 20, epsilon, function, x, d);
             double[] s = baseOperations.multiplyVectorOnNumber(d, r);
             x = baseOperations.vectorSum(x, s);
             if (baseOperations.euclideanNorm(s) <= epsilon) {

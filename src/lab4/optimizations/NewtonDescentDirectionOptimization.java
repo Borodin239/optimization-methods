@@ -27,7 +27,7 @@ public class NewtonDescentDirectionOptimization implements Optimization {
             } else {
                 d = baseOperations.negateVector(gradient);
             }
-            r = goldenSectionSearch.getOptimization(-10, 10, epsilon, function, x, d);
+            r = goldenSectionSearch.getOptimization(-20, 20, epsilon, function, x, d);
             s = baseOperations.multiplyVectorOnNumber(d, r);
             x = baseOperations.vectorSum(x, s);
             if (baseOperations.euclideanNorm(s) <= epsilon) {

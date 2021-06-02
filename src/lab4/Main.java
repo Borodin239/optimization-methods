@@ -1,6 +1,7 @@
 package lab4;
 
 import lab4.functions.FirstFunction;
+import lab4.functions.NotQuadraticFunction;
 import lab4.optimizations.NewtonDescentDirectionOptimization;
 import lab4.optimizations.NewtonOptimization;
 import lab4.functions.FunctionInfo;
@@ -13,6 +14,8 @@ public class Main {
     public static void main(String[] args) {
         runFunction(new ZeroFunction(), new double[]{4, 1}, "(x_1)^2 + (x_2)^2 - 1.2 * x_1 * x_2");
         runFunction(new FirstFunction(), new double[]{-1.2, 1}, "");
+        runFunction(new NotQuadraticFunction(), new double[]{4, -2, 3},
+                "x1*x1*x1*x1 + x2*x2 + x3 * x3 - 12*x2*x3+17");
     }
 
     private static void runFunction(final FunctionInfo function, final double[] startPoint, final String functionName) {
