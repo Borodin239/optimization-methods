@@ -1,7 +1,10 @@
 package lab4.optimizations;
 
+import lab4.BaseOperations;
 import lab4.functions.FunctionInfo;
 
 public interface Optimization {
-    double[] solve (double[] values, FunctionInfo function);
+    BaseOperations baseOperations = new BaseOperations();
+
+    double[] solve (double[] values, FunctionInfo function, double epsilon);
 }

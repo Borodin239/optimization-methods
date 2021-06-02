@@ -1,14 +1,11 @@
 package lab4.optimizations;
 
 import lab3.ProfileMatrix;
-import lab4.BaseOperations;
 import lab4.functions.FunctionInfo;
 
 public class NewtonOptimization implements Optimization {
-    double EPSILON = 0.0000001;
-    BaseOperations baseOperations = new BaseOperations();
 
-    public double[] solve(double[] values, FunctionInfo function) {
+    public double[] solve(final double[] values, final FunctionInfo function, final double epsilon) {
         double[] x = values;
         while (true) {
             double[] gradient = function.gradient(x);
@@ -16,7 +13,7 @@ public class NewtonOptimization implements Optimization {
             ProfileMatrix profileMatrix = new ProfileMatrix(hessian);
             double[] s = profileMatrix.solveByLU(baseOperations.negateVector(gradient));
             x = baseOperations.vectorSum(x, s);
-            if (baseOperations.euclideanNorm(s) <= EPSILON) {
+            if (baseOperations.euclideanNorm(s) <= epsilon) {
                 return x;
             }
         }
