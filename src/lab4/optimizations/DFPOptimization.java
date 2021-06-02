@@ -26,9 +26,14 @@ public class DFPOptimization implements Optimization {
             double[] deltaW = baseOperations.vectorSub(w2, w1);
             w1 = Arrays.copyOf(w2, w2.length);
             double[] vk = baseOperations.multiplyMatrixOnVector(G, deltaW);
-            G = baseOperations.diagonalMinus(G, baseOperations.scalar(deltaX, deltaX) /
-                    baseOperations.scalar(deltaX, deltaW) + baseOperations.scalar(vk, vk) /
-                    baseOperations.scalar(vk, deltaW));
+            G = baseOperations.matrixSub(G, baseOperations.matrixSum(
+                    baseOperations.multiplyMatrixOnNumber(
+                            baseOperations.multiplyColumnOnRow(deltaX, deltaX),
+                            1/baseOperations.scalar(deltaW, deltaX)),
+                    baseOperations.multiplyMatrixOnNumber(
+                            baseOperations.multiplyColumnOnRow(vk, vk),
+                            1/baseOperations.scalar(vk, deltaW)))
+            );
             p = baseOperations.multiplyMatrixOnVector(G, w2);
             r = goldenSectionSearch.getOptimization(-20, 20, epsilon, function, x1, p);
             x2 = baseOperations.vectorSum(x1, baseOperations.multiplyVectorOnNumber(p, r));

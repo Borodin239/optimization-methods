@@ -130,15 +130,11 @@ public class BaseOperations {
         return res;
     }
 
-    public double[][] diagonalMinus(final double[][] matrix, final double number) {
-        double[][] res = new double[matrix.length][matrix[0].length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (i == j) {
-                    res[i][j] = matrix[i][j] - number;
-                } else {
-                    res[i][j] = matrix[i][j];
-                }
+    public double[][] multiplyColumnOnRow(final double[] column, final double[] row) {
+        double[][] res = new double[column.length][column.length];
+        for (int i = 0; i < res.length; i++) {
+            for (int j = 0; j < res.length; j++) {
+                res[i][j] = column[i] * row[j];
             }
         }
         return res;
