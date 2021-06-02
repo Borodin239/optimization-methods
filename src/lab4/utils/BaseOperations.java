@@ -130,6 +130,20 @@ public class BaseOperations {
         return res;
     }
 
+    public double[][] diagonalMinus(final double[][] matrix, final double number) {
+        double[][] res = new double[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (i == j) {
+                    res[i][j] = matrix[i][j] - number;
+                } else {
+                    res[i][j] = matrix[i][j];
+                }
+            }
+        }
+        return res;
+    }
+
     public double[] multiplyMatrixOnVector(final double[][] matrix, final double[] vector) {
         double[] ans = new double[matrix.length];
         for (int i = 0; i < matrix.length; i++) {
